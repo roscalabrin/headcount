@@ -20,6 +20,23 @@ class DistrictRepositoryTest < Minitest::Test
     assert CSV, content.class
   end
 
+  def test_that_it_finds_an_existing_district_by_name
+    dr = DistrictRepository.new
+
+
+    assert_equal "ACADEMY 20", dr.find_by_name("ACADEMY 20")
+  end
+
+  def test_that_it_returns_nil_if_district_does_not_exist
+    dr = DistrictRepository.new
+    
+
+    assert_equal nil, dr.find_by_name("whatever")
+  end
+
+  # def test_find_all_matching
+  #
+  # end
 
 
 
