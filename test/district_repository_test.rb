@@ -1,5 +1,6 @@
 require './test/test_helper'
 require './lib/district_repository'
+require './lib/district'
 
 class DistrictRepositoryTest < Minitest::Test
 
