@@ -4,4 +4,4 @@ gem 'cane'
 gem 'reek'
 gem 'rake'
 gem 'minitest'
-gem 'simplecov'
+gem 'simplecov', :require => false, :group => :test
