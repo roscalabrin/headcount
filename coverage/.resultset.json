@@ -1,0 +1,32 @@
+{
+  "Unit Tests": {
+    "coverage": {
+      "/Users/soniagupta504/Turing/1module_redux/projects/headcount/lib/district_repository.rb": [
+        1,
+        null,
+        1,
+        null,
+        null,
+        null,
+        null,
+        null,
+        1,
+        1,
+        1,
+        null,
+        null,
+        1,
+        2,
+        null,
+        2,
+        2003,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "timestamp": 1465262801
+  }
+}
