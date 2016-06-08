@@ -5,6 +5,7 @@ require_relative 'enrollment'
 class EnrollmentRepository
   attr_reader :enrollment_collection
 
+
   def initialize
     @enrollment_collection = {}
   end
@@ -16,6 +17,7 @@ class EnrollmentRepository
    CSV.foreach(filepath, headers: true, header_converters: :symbol) do |row|
      array << ({:name => row[:location], row[:timeframe].to_i => row[:data].to_f})
    end
+
    parse_data(array)
   end
 
@@ -31,11 +33,15 @@ class EnrollmentRepository
   end
 
   def finalize_load_data(array_2)
-    array_2.map do |item|
-    enrollment_object = Enrollment.new(item.fetch(:kindergarten_participation).delete_if { |key, value| key == :name })
-    enrollment_collection[item.fetch(:name)] = enrollment_object
+    final = array_2.map do |item|
+      item[:kindergarten_participation].delete(:name)
+      item
     end
-  # binding.pry
+    final.map do |item|
+      enrollment_object = Enrollment.new(item)
+      enrollment_collection[item[:name]] = enrollment_object
+
+    end
   end
 
   def find_by_name(district_name)
