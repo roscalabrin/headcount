@@ -1,7 +1,7 @@
 {
   "Unit Tests": {
     "coverage": {
-      "/Users/Roberta/Dropbox/BURT/Turing/Mod_1/projects/headcount/lib/district_repository.rb": [
+      "/Users/Roberta/Dropbox/BURT/Turing/Mod_1/projects/final_project/headcount/lib/district_repository.rb": [
         1,
         1,
         null,
@@ -37,7 +37,7 @@
         null,
         null
       ],
-      "/Users/Roberta/Dropbox/BURT/Turing/Mod_1/projects/headcount/lib/district.rb": [
+      "/Users/Roberta/Dropbox/BURT/Turing/Mod_1/projects/final_project/headcount/lib/district.rb": [
         1,
         1,
         null,
@@ -51,7 +51,7 @@
         null,
         null
       ],
-      "/Users/Roberta/Dropbox/BURT/Turing/Mod_1/projects/headcount/test/district_test.rb": [
+      "/Users/Roberta/Dropbox/BURT/Turing/Mod_1/projects/final_project/headcount/test/district_test.rb": [
         1,
         1,
         null,
@@ -77,7 +77,7 @@
         null,
         null
       ],
-      "/Users/Roberta/Dropbox/BURT/Turing/Mod_1/projects/headcount/test/enrollment_repository_test.rb": [
+      "/Users/Roberta/Dropbox/BURT/Turing/Mod_1/projects/final_project/headcount/test/enrollment_repository_test.rb": [
         1,
         1,
         null,
@@ -100,7 +100,7 @@
         null,
         null
       ],
-      "/Users/Roberta/Dropbox/BURT/Turing/Mod_1/projects/headcount/lib/enrollment_repository.rb": [
+      "/Users/Roberta/Dropbox/BURT/Turing/Mod_1/projects/final_project/headcount/lib/enrollment_repository.rb": [
         1,
         1,
         1,
@@ -147,12 +147,17 @@
         null,
         null
       ],
-      "/Users/Roberta/Dropbox/BURT/Turing/Mod_1/projects/headcount/lib/enrollment.rb": [
+      "/Users/Roberta/Dropbox/BURT/Turing/Mod_1/projects/final_project/headcount/lib/enrollment.rb": [
         1,
         1,
         null,
         1,
         366,
+        null,
+        null,
+        null,
+        null,
+        null,
         null,
         null,
         1,
@@ -173,7 +178,7 @@
         null,
         null
       ],
-      "/Users/Roberta/Dropbox/BURT/Turing/Mod_1/projects/headcount/test/enrollment_test.rb": [
+      "/Users/Roberta/Dropbox/BURT/Turing/Mod_1/projects/final_project/headcount/test/enrollment_test.rb": [
         1,
         1,
         null,
@@ -212,6 +217,6 @@
         null
       ]
     },
-    "timestamp": 1465361894
+    "timestamp": 1465411138
   }
 }
