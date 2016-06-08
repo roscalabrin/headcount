@@ -7,6 +7,6 @@ class District
   end
 
   def name
-    district_data[:name].upcase
+    district_data[:name]
   end
 end

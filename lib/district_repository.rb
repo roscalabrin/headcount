@@ -1,17 +1,18 @@
 require 'csv'
-require 'pry'
+require_relative 'enrollment_repository'
 
 class DistrictRepository
   attr_reader :district_collection
 
   def initialize
     @district_collection = {}
+    @enrollment = EnrollmentRepository.new
   end
 
   def load_data(file_tree)
     filepath = file_tree[:enrollment][:kindergarten]
     CSV.foreach(filepath, headers: true, header_converters: :symbol) do |row|
-      district_name = row[:location]#row[:location] is a string
+      district_name = row[:location].upcase#row[:location] is a string
       district_object = District.new({:name => district_name})
       district_collection[district_name] = district_object
       #refactor for above code:
@@ -21,7 +22,7 @@ class DistrictRepository
   end
 
   def find_by_name(district_name)
-    district_collection[district_name]
+    district_collection[district_name.upcase]
   end
 
   def find_all_matching(district_name_fragment)
