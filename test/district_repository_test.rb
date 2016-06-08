@@ -7,7 +7,7 @@ class DistrictRepositoryTest < Minitest::Test
   def test_that_district_repository_exists
    dr = DistrictRepository.new
 
-   assert District
+   assert_instance_of DistrictRepository, dr
   end
 
   def test_that_it_loads_data_file
@@ -21,14 +21,15 @@ class DistrictRepositoryTest < Minitest::Test
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv"}})
 
-    assert District, dr.find_by_name("ACADEMY 20")
+    assert_instance_of District, dr.find_by_name("ACADEMY 20")
+    assert_instance_of District, dr.find_by_name("Colorado")
   end
 
   def test_that_it_finds_an_existing_district_by_name_and_its_case_insensitive
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv"}})
 
-    assert District, dr.find_by_name("AcadeMy 20")
+    assert_instance_of District, dr.find_by_name("AcadeMy 20")
   end
 
   def test_that_it_returns_nil_if_district_does_not_exist
@@ -54,8 +55,12 @@ class DistrictRepositoryTest < Minitest::Test
     assert_equal ["AGATE 300", "AGUILAR REORGANIZED 6","ARRIBA-FLAGLER C-20", "EAGLE COUNTY RE 50"], dr.find_all_matching("ag")
   end
 
-  # dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv"}})
+  def test_it_creates_an_instance_of_enrollment_respository
+    dr = DistrictRepository.new
+    # dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv"}})
 
+    assert_instance_of EnrollmentRepository, dr.find_by_name.enro
+  end
 
 
 end
