@@ -10,41 +10,36 @@ class EnrollmentRepository
   end
 
   def load_data(file_tree)
-    filepath = file_tree[:enrollment][:kindergarten]
-    CSV.foreach(filepath, headers: true, header_converters: :symbol) do |row|
-      district_name = row[:location]
-      year = row[:timeframe]
-      data = row[:data]
-      enrollment_object = Enrollment.new({:name => district_name, :kindergarten_participation => {year => data}})
+   filepath = file_tree[:enrollment][:kindergarten]
+   array = []
 
-      #refactor for above code:
-      # name = row[:location]
-      # district_collection[name] = District.new({:name => name}
+   CSV.foreach(filepath, headers: true, header_converters: :symbol) do |row|
+     array << ({:name => row[:location], row[:timeframe].to_i => row[:data].to_f})
+   end
+   parse_data(array)
+  end
+
+  def parse_data(array)
+   new_array = array.group_by { |a| a.values.first }.map{|_, second_pair| second_pair.reduce(:merge)}
+
+    array_2 = new_array.reduce({}) do |result, item|
+      new_array.map do |item|
+      {:name => item.values_at(:name).join, :kindergarten_participation => item}
+      end
     end
-    binding.pry
+    finalize_load_data(array_2)
+  end
+
+  def finalize_load_data(array_2)
+    array_2.map do |item|
+    enrollment_object = Enrollment.new(item.fetch(:kindergarten_participation).delete_if { |key, value| key == :name })
+    enrollment_collection[item.fetch(:name)] = enrollment_object
+    end
+  # binding.pry
   end
 
   def find_by_name(district_name)
-    "test"
-
+    enrollment_collection[district_name]
   end
 
 end
-
-#	#need to take any CSV, pull only enrollement information out of it, then attach that district name to instance of district class (object) and then stick that object into @district_collection
-
-
-# e = EnrollmentRepository.new
-# puts e.load_data({
-#   :enrollment => {
-#     :kindergarten => "./data/Kindergartners in full-day program.csv"
-#   }})
-
-# def load_data(file_tree)
-#   filepath = file_tree[:enrollment][:kindergarten]
-#   years = []
-#   CSV.foreach(filepath, headers: true, header_converters: :symbol) do |row|
-#     years << ({:name => row[:location], row[:timeframe].to_i => row[:data].to_f})
-#   end
-#   puts years
-# end
