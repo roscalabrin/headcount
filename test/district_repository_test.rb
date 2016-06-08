@@ -1,13 +1,13 @@
-require './test/test_helper'
-require './lib/district_repository'
-require './lib/district'
+require_relative 'test_helper'
+require_relative '../lib/district_repository'
+require_relative '../lib/district'
 
 class DistrictRepositoryTest < Minitest::Test
 
   def test_that_district_repository_exists
    dr = DistrictRepository.new
 
-   assert DistrictRepository
+   assert District
   end
 
   def test_that_it_loads_data_file
