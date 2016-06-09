@@ -16,7 +16,6 @@ class EnrollmentRepository
    CSV.foreach(filepath, headers: true, header_converters: :symbol) do |row|
      array << ({:name => row[:location], row[:timeframe].to_i => row[:data].to_f})
    end
-
    parse_data(array)
   end
 
@@ -39,7 +38,6 @@ class EnrollmentRepository
     final.map do |item|
       enrollment_object = Enrollment.new(item)
       enrollment_collection[item[:name]] = enrollment_object
-
     end
   end
 
