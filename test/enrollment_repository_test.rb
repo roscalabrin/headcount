@@ -15,7 +15,7 @@ class EnrollmentRepositoryTest < Minitest::Test
     er.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv"}})
     enrollment = er.find_by_name("ACADEMY 20")
 
-    assert Enrollment, enrollment
+    assert_instance_of Enrollment, enrollment
   end
 
   def test_it_returns_the_name_of_the_district

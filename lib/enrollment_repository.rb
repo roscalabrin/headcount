@@ -2,8 +2,7 @@ require 'csv'
 require_relative 'enrollment'
 
 class EnrollmentRepository
-  attr_accessor :enrollment_collection
-
+  attr_reader :enrollment_collection
 
   def initialize
     @enrollment_collection = {}
@@ -11,16 +10,16 @@ class EnrollmentRepository
 
   def load_data(file_tree)
    filepath = file_tree[:enrollment][:kindergarten]
-   array = []
+   enrollment_array = []
 
    CSV.foreach(filepath, headers: true, header_converters: :symbol) do |row|
-     array << ({:name => row[:location], row[:timeframe].to_i => row[:data].to_f})
+     enrollment_array << ({:name => row[:location].upcase, row[:timeframe].to_i => row[:data].to_f})
    end
-   parse_data(array)
+   parse_data(enrollment_array)
   end
 
-  def parse_data(array)
-   new_array = array.group_by { |a| a.values.first }.map{|_, second_pair| second_pair.reduce(:merge)}
+  def parse_data(enrollment_array)
+   new_array = enrollment_array.group_by { |a| a.values.first }.map{|_, second_pair| second_pair.reduce(:merge)}
 
     array_2 = new_array.reduce({}) do |result, item|
       new_array.map do |item|

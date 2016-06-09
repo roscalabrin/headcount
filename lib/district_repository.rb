@@ -10,21 +10,34 @@ class DistrictRepository
 
   def initialize
     @district_collection = {}
-    @enrollment_repo = {}
+    # @enrollment_repo = {}
     @enrollment_repo = EnrollmentRepository.new
   end
 
   def load_data(file_tree)
-    enrollment_repo.load_data(file_tree)
+	  enrollment_repo.load_data(file_tree).each do |hash|
+	    names_array = enrollment_repo.enrollment_collection.keys
+	      names_array.each do |name|
+	        district = District.new({:name => name})
+	        district_collection[name.upcase] = district
+          district.enrollment = enrollment_repo.enrollment_collection.fetch(name)
+	      end
+      end
+	  end
 
-    filepath = file_tree[:enrollment][:kindergarten]
-    CSV.foreach(filepath, headers: true, header_converters: :symbol) do |row|
-      district_name = row[:location].upcase
-      district_object = District.new({:name => district_name})
-      district_collection[district_name] = district_object
-      
-    end
-  end
+
+  # def load_data(file_tree)
+  #   enrollment_repo.load_data(file_tree)
+  #
+  #   filepath = file_tree[:enrollment][:kindergarten]
+  #   CSV.foreach(filepath, headers: true, header_converters: :symbol) do |row|
+  #     district_name = row[:location].upcase
+  #     district_object = District.new({:name => district_name})
+  #     district_collection[district_name] = district_object
+  #
+  #   end
+  #   binding.pry
+  # end
 
   def find_by_name(district_name)
     if district_collection[district_name.upcase].nil?
