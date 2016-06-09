@@ -1,23 +1,14 @@
-require 'pry'
-require_relative 'district_repository'
-
 class District
-  attr_reader :district_data,
-              :name,
-              :enrollment
+  attr_reader   :name
+  attr_accessor :enrollment
 
   def initialize(district_data)
     @district_data = district_data
-    @enrollment
+    @enrollment = 0
   end
 
   def name
-    district_data[:name].upcase
-    # binding.pry
-  end
-
-  def enrollment
-    DistrictRepository.find_enrollment(name)
+    @district_data[:name].upcase
   end
 
 end
