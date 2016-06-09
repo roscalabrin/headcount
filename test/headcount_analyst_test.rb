@@ -11,7 +11,6 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_comparison_against_state #problem with Colorado
-    skip
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv"}})
     ha = HeadcountAnalyst.new(dr)
