@@ -62,6 +62,7 @@ class DistrictRepositoryTest < Minitest::Test
   end
 
   def test_it_can_access_enrollment_data
+    skip
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv"}})
     district = dr.find_by_name("ACADEMY 20")
@@ -71,6 +72,7 @@ class DistrictRepositoryTest < Minitest::Test
   end
 
   def test_it_can_access_enrollment_participation_by_year
+    skip
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv"}})
     district = dr.find_by_name("ACADEMY 20")

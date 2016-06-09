@@ -22,6 +22,7 @@ class DistrictRepository
       district_name = row[:location].upcase
       district_object = District.new({:name => district_name})
       district_collection[district_name] = district_object
+      
     end
   end
 

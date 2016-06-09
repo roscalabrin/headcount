@@ -6,7 +6,7 @@ class DistrictTest < Minitest::Test
   def test_that_district_exists
     d = District.new({:name => "ACADEMY 20"})
 
-    assert d
+    assert_instance_of District, d
   end
 
   def test_name_returns_upcase_district_name

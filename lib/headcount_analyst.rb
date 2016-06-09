@@ -14,7 +14,9 @@ class HeadcountAnalyst
     district_1 = average_district(district_1)
     district_2 = average_district(district_2.fetch(:against).upcase)
 
-    district_1/district_2
+    p district_1/district_2
+    # p district_2
+      # binding.pry
   end
 
   def average_district(district)
