@@ -57,10 +57,10 @@ class DistrictRepositoryTest < Minitest::Test
 
   def test_it_creates_an_instance_of_enrollment_respository
     dr = DistrictRepository.new
-    # dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv"}})
 
-    assert_instance_of EnrollmentRepository, dr.find_by_name.enro
+    assert_instance_of EnrollmentRepository, dr.enrollment_repo
   end
+
 
 
 end

@@ -1,12 +1,14 @@
+
 require 'csv'
 require_relative 'enrollment_repository'
 
 class DistrictRepository
-  attr_reader :district_collection
+  attr_reader :district_collection,
+              :enrollment_repo
 
   def initialize
     @district_collection = {}
-    @enrollment = EnrollmentRepository.new
+    @enrollment_repo = EnrollmentRepository.new
   end
 
   def load_data(file_tree)
