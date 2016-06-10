@@ -26,4 +26,5 @@ class EnrollmentRepositoryTest < Minitest::Test
     assert_equal "ACADEMY 20", enrollment.name
   end
 
+
 end

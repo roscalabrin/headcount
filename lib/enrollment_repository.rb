@@ -1,7 +1,10 @@
+require 'pry'
 require 'csv'
 require_relative 'enrollment'
 
 class EnrollmentRepository
+  include Format
+
   attr_reader :enrollment_collection
 
   def initialize
@@ -11,6 +14,12 @@ class EnrollmentRepository
   def load_data(file_tree)
    filepath = file_tree[:enrollment][:kindergarten]
    enrollment_array = []
+  #  filepath_2 = file_tree[:enrollment][:high_school_graduation]
+   #
+  #  kindergarten_array = parse_file(file_tree)
+  #  high_school_array = parse_file(file_tree_2)
+   #
+  #  create_enrollment_object(kindergarten_array, high_school_array)
 
    CSV.foreach(filepath, headers: true, header_converters: :symbol) do |row|
      enrollment_array << ({:name => row[:location].upcase, row[:timeframe].to_i => row[:data].to_f})
@@ -38,6 +47,7 @@ class EnrollmentRepository
       enrollment_object = Enrollment.new(item)
       enrollment_collection[item[:name]] = enrollment_object
     end
+    # binding.pry
   end
 
   def find_by_name(district_name)
