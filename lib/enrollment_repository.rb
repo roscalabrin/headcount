@@ -1,9 +1,11 @@
 require 'pry'
 require 'csv'
 require_relative 'enrollment'
+require_relative 'parser'
 
 class EnrollmentRepository
   include Format
+  include Parser
 
   attr_reader :enrollment_collection
 
@@ -13,41 +15,19 @@ class EnrollmentRepository
 
   def load_data(file_tree)
    filepath = file_tree[:enrollment][:kindergarten]
-   enrollment_array = []
-  #  filepath_2 = file_tree[:enrollment][:high_school_graduation]
-   #
-  #  kindergarten_array = parse_file(file_tree)
-  #  high_school_array = parse_file(file_tree_2)
-   #
-  #  create_enrollment_object(kindergarten_array, high_school_array)
-
-   CSV.foreach(filepath, headers: true, header_converters: :symbol) do |row|
-     enrollment_array << ({:name => row[:location].upcase, row[:timeframe].to_i => row[:data].to_f})
-   end
-   parse_data(enrollment_array)
+   filepath_2 = file_tree[:enrollment][:high_school_graduation]
+#find a way to dynamically pass in the key (i.e. :kindergarten, or high_school_graduation, or whatever)
+#maybe make a method that just extracts the filepath dynamically (def extract filepath, takes in the actual key as an arg)
+   kindergarten_array = csv_parser(filepath, :kindergarten)
+   high_school_array = csv_parser(filepath_2, :high_school_graduation)
   end
 
-  def parse_data(enrollment_array)
-   new_array = enrollment_array.group_by { |a| a.values.first }.map{|_, second_pair| second_pair.reduce(:merge)}
-
-    array_2 = new_array.reduce({}) do |result, item|
-      new_array.map do |item|
-      {:name => item.values_at(:name).join, :kindergarten_participation => item}
-      end
-    end
-    finalize_load_data(array_2)
-  end
-
-  def finalize_load_data(array_2)
-    final = array_2.map do |item|
-      item[:kindergarten_participation].delete(:name)
-      item
-    end
+  def create_enrollment_object
     final.map do |item|
       enrollment_object = Enrollment.new(item)
       enrollment_collection[item[:name]] = enrollment_object
     end
-    # binding.pry
+    binding.pry
   end
 
   def find_by_name(district_name)
