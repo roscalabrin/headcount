@@ -30,7 +30,6 @@ class DistrictRepository
       nil
     else
       # district_collection[district_name.upcase].enrollment =  enrollment_repo.enrollment_collection[district_name]
-
       district_collection[district_name.upcase]
     end
     # binding.pry

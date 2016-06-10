@@ -1,4 +1,8 @@
+require_relative 'format'
+
 class Enrollment
+  include Format
+
   attr_reader :enrollment_data,
               :name
 
@@ -13,10 +17,6 @@ class Enrollment
      participation_by_year[key] = truncate(value)
    end
    participation_by_year
-  end
-
-  def truncate(number)
-    (number * 1000).floor / 1000.to_f
   end
 
   def kindergarten_participation_in_year(year)
