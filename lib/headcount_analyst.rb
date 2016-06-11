@@ -51,6 +51,20 @@ class HeadcountAnalyst
     truncate(kindergarten_participation_rate_variation(district_1, state) / high_school_graduation_rate_variation(district_1, state))
   end
 
+  def kindergarten_participation_correlates_with_high_school_graduation(district)
+    against = kindergarten_participation_against_high_school_graduation(district)
+    if against >= 0.6 && against <= 1.5
+      true
+    else
+      false
+    end
+    #if district(the argument passed in above) is "STATEWIDE" then kick to another method. If more than 70% of districts across the state show a correlation, then this method will answer true. If it's less than 70% we'll answer false.
+
+    #even before this special "STATEWIDE" method, we need a method that calculates the kindergarten_participation_against_high_school_graduation for every district, put these results into an array.
+
+    #then we say if 70% or more of these numbers in the above array are between 0.6 and 1.5 return true, else false.
+  end
+
   def get_hash(dist_or_state)
    hash = district_repository.district_collection.fetch(dist_or_state).enrollment.enrollment_data[:kindergarten_participation]
    Hash[hash.sort]
