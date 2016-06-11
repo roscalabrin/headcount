@@ -27,7 +27,7 @@ class EnrollmentTest < Minitest::Test
   end
 
   def test_graduation_rate_by_year
-    e = Enrollment.new({:name => "ACADEMY 20", :kindergarten_participation => {2010 => 0.3915, 2011 => 0.35356, 2012 => 0.2677}, :highschool_grad_rate => {2010 => 0.895, 2011 => 0.895, 2012 => 0.88983, 2013 => 0.91373,
+    e = Enrollment.new({:name => "ACADEMY 20", :kindergarten_participation => {2010 => 0.3915, 2011 => 0.35356, 2012 => 0.2677}, :high_school_graduation_rates => {2010 => 0.895, 2011 => 0.895, 2012 => 0.88983, 2013 => 0.91373,
      2014 => 0.898}})
 
     result = {2010 => 0.895, 2011 => 0.895, 2012 => 0.889, 2013 => 0.913, 2014 => 0.898}
@@ -36,7 +36,7 @@ class EnrollmentTest < Minitest::Test
   end
 
   def test_graduation_rate_in_year
-    e = Enrollment.new({:name => "ACADEMY 20", :kindergarten_participation => {2010 => 0.3915, 2011 => 0.35356, 2012 => 0.2677}, :highschool_grad_rate => {2010 => 0.895, 2011 => 0.895, 2012 => 0.88983, 2013 => 0.91373,
+    e = Enrollment.new({:name => "ACADEMY 20", :kindergarten_participation => {2010 => 0.3915, 2011 => 0.35356, 2012 => 0.2677}, :high_school_graduation_rates => {2010 => 0.895, 2011 => 0.895, 2012 => 0.88983, 2013 => 0.91373,
      2014 => 0.898}})
 
     assert_equal 0.895, e.graduation_rate_in_year(2010)

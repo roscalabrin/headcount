@@ -13,14 +13,23 @@ class HeadcountAnalyst
   end
 
   def kindergarten_participation_rate_variation(district_1, state_or_district_2)
-    district_1_average = average(district_1.upcase)
-    state_or_district_2_average = average(state_or_district_2.fetch(:against).upcase)
+    key = :kindergarten_participation
+    district_1_average = average(district_1.upcase, key)
+    state_or_district_2_average = average(state_or_district_2.fetch(:against).upcase, key)
 
     truncate(district_1_average/state_or_district_2_average)
   end
 
-  def average(dist_or_state)
-    participation_rates = district_repository.district_collection.fetch(dist_or_state).enrollment.enrollment_data[:kindergarten_participation].values #an array
+  def high_school_graduation_rate_variation(district_1, state)
+    key = :high_school_graduation_rates
+    district_1_average = average(district_1.upcase, key)
+    state_average = average(state.fetch(:against).upcase, key)
+
+    truncate(district_1_average/state_average)
+  end
+
+  def average(dist_or_state, key)
+    participation_rates = district_repository.district_collection.fetch(dist_or_state).enrollment.enrollment_data[key].values #an array
   # binding.pry
     participation_rates.reduce(:+) / participation_rates.length
   end
@@ -35,6 +44,11 @@ class HeadcountAnalyst
       nil
     end
     # binding.pry
+  end
+
+  def kindergarten_participation_against_high_school_graduation(district_1, state = {:against => 'COLORADO'})
+
+    truncate(kindergarten_participation_rate_variation(district_1, state) / high_school_graduation_rate_variation(district_1, state))
   end
 
   def get_hash(dist_or_state)

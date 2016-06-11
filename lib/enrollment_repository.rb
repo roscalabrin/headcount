@@ -21,7 +21,7 @@ class EnrollmentRepository
      else
        filepath_2 = file_tree[:enrollment][:high_school_graduation]
        kindergarten_array = csv_parser(filepath, :kindergarten_participation)
-       high_school_array = csv_parser(filepath_2, :highschool_grad_rate)
+       high_school_array = csv_parser(filepath_2, :high_school_graduation_rates)
        merge_data(kindergarten_array, high_school_array)
      end
 #find a way to dynamically pass in the key (i.e. :kindergarten, or high_school_graduation, or whatever)
