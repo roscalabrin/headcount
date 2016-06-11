@@ -20,7 +20,27 @@ class Enrollment
   end
 
   def kindergarten_participation_in_year(year)
-    kindergarten_participation_by_year.fetch(year)
+    if kindergarten_participation_by_year.key?(year) == false
+      nil
+    else
+      kindergarten_participation_by_year.fetch(year)
+    end
+  end
+
+  def graduation_rate_by_year
+    graduation_rate_by_year = enrollment_data[:highschool_grad_rate]
+    graduation_rate_by_year.map do |key, value|
+      graduation_rate_by_year[key] = truncate(value)
+    end
+    graduation_rate_by_year
+  end
+
+  def graduation_rate_in_year(year)
+    if graduation_rate_by_year.key?(year) == false
+      nil
+    else
+      graduation_rate_by_year.fetch(year)
+    end
   end
 
 end

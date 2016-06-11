@@ -30,14 +30,11 @@ class EnrollmentRepositoryTest < Minitest::Test
   end
 
   def test_that_it_loads_data_file_with_two_paths
-
     er = EnrollmentRepository.new
     er.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv", :high_school_graduation => "./data/High school graduation rates.csv"}})
 
     assert_equal 181, er.enrollment_collection.length
   end
-
-
 
 
 end
