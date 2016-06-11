@@ -12,7 +12,7 @@ class Enrollment
     @enrollment_data = enrollment_data
   end
 
-  def kindergarten_participation_by_year #check if we can move truncate
+  def kindergarten_participation_by_year
    participation_by_year = enrollment_data[:kindergarten_participation]
    participation_by_year.map do |key, value|
      participation_by_year[key] = truncate(value)
@@ -28,7 +28,7 @@ class Enrollment
     end
   end
 
-  def graduation_rate_by_year #check if we can move truncate
+  def graduation_rate_by_year
     # binding.pry
     graduation_rate_by_year = enrollment_data[:high_school_graduation_rates]
     graduation_rate_by_year.map do |key, value|

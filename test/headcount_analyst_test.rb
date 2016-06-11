@@ -10,20 +10,23 @@ class HeadcountAnalystTest < Minitest::Test
    assert_instance_of HeadcountAnalyst, ha
   end
 
-  def test_comparison_kindergarten_participation_rate_of_district_against_state
+  def test_kindergarten_participation_rate_variation_against_state
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv"}})
     ha = HeadcountAnalyst.new(dr)
 
     assert_equal 0.766, ha.kindergarten_participation_rate_variation('ACADEMY 20', :against => 'COLORADO')
+    assert_equal nil, ha.kindergarten_participation_rate_variation('NEW YORK', :against => 'COLORADO')
+    assert_equal nil, ha.kindergarten_participation_rate_variation('ACADEMY 20', :against => 'NEW YORK')
   end
 
-  def test_comparison_kindergarten_participation_rate_of_district_against_another_district
+  def test_kindergarten_participation_rate_variation_against_another_district
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv"}})
     ha = HeadcountAnalyst.new(dr)
 
     assert_equal 0.447, ha.kindergarten_participation_rate_variation('ACADEMY 20', :against => 'YUMA SCHOOL DISTRICT 1')
+    assert_equal nil, ha.kindergarten_participation_rate_variation('NEW YORK', :against => 'YUMA SCHOOL DISTRICT 1')
   end
 
   def test_high_school_graduation_rate_variation_district_against_state
@@ -32,14 +35,18 @@ class HeadcountAnalystTest < Minitest::Test
     ha = HeadcountAnalyst.new(dr)
 
     assert_equal 1.195, ha.high_school_graduation_rate_variation('ACADEMY 20', :against => 'COLORADO')
+    assert_equal nil, ha.high_school_graduation_rate_variation('PLACE', :against => 'COLORADO')
+    assert_equal nil, ha.high_school_graduation_rate_variation('ACADEMY 20', :against => 'NOT COLORADO')
   end
 
-  def test_comparison_participation_rate_variation_trend
+  def test_kindergarten_participation_rate_variation_trend
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv"}})
     ha = HeadcountAnalyst.new(dr)
 
     assert_equal 0.447, ha.kindergarten_participation_rate_variation('ACADEMY 20', :against => 'YUMA SCHOOL DISTRICT 1')
+    assert_equal nil, ha.kindergarten_participation_rate_variation('NEW YORK', :against => 'YUMA SCHOOL DISTRICT 1')
+    assert_equal nil, ha.kindergarten_participation_rate_variation('ACADEMY 20', :against => 'NEW YORK')
   end
 
   def test_that_it_calculates_participation_rate_average
@@ -48,14 +55,6 @@ class HeadcountAnalystTest < Minitest::Test
     ha = HeadcountAnalyst.new(dr)
 
     assert_equal 0.4064509090909091, ha.average('ACADEMY 20', :kindergarten_participation)
-  end
-
-  def test_get_hash_method
-    dr = DistrictRepository.new
-    dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv"}})
-    ha = HeadcountAnalyst.new(dr)
-
-    assert_equal ({2007=>0.39159, 2006=>0.35364, 2005=>0.26709, 2004=>0.30201, 2008=>0.38456, 2009=>0.39, 2010=>0.43628, 2011=>0.489, 2012=>0.47883, 2013=>0.48774, 2014=>0.49022}), ha.get_hash('ACADEMY 20')
   end
 
   def test_kindergarten_participation_rate_variation_trend_method
@@ -72,6 +71,7 @@ class HeadcountAnalystTest < Minitest::Test
     ha = HeadcountAnalyst.new(dr)
 
     assert_equal 0.641, ha.kindergarten_participation_against_high_school_graduation('ACADEMY 20')
+    assert_equal nil, ha.kindergarten_participation_against_high_school_graduation('NEW YORK')
   end
 
   def test_kindergarten_participation_correlates_with_high_school_graduation
@@ -80,9 +80,15 @@ class HeadcountAnalystTest < Minitest::Test
     ha = HeadcountAnalyst.new(dr)
 
     assert ha.kindergarten_participation_correlates_with_high_school_graduation('ACADEMY 20')
+    refute ha.kindergarten_participation_correlates_with_high_school_graduation('NEW YORK')
   end
 
-  #add test for refutatation of above method
+  def test_get_hash_method
+    dr = DistrictRepository.new
+    dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv"}})
+    ha = HeadcountAnalyst.new(dr)
 
+    assert_equal ({2007=>0.39159, 2006=>0.35364, 2005=>0.26709, 2004=>0.30201, 2008=>0.38456, 2009=>0.39, 2010=>0.43628, 2011=>0.489, 2012=>0.47883, 2013=>0.48774, 2014=>0.49022}), ha.get_hash('ACADEMY 20')
+  end
 
 end
