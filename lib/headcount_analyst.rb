@@ -61,8 +61,10 @@ class HeadcountAnalyst
   end
 
   def kindergarten_participation_correlates_with_high_school_graduation(district)
-    district = format_district_input(district)
-    if validate_district_input(district)
+    district = check_for_statewide_as_argument(district)
+    if district == "STATEWIDE"
+      list_of_all_districts
+    elsif validate_district_input(district)
     against = kindergarten_participation_against_high_school_graduation(district)
       if against >= 0.6 && against <= 1.5
         true
@@ -71,6 +73,18 @@ class HeadcountAnalyst
       end
     end
   end
+
+  def list_of_all_districts
+    "test"
+    # statewide = district_repository.district_collection.keys #except for the word "Colorado"
+
+  end
+
+
+
+  # def check_if_statewide
+  #
+  # end
     #if district(the argument passed in above) is "STATEWIDE" then kick to another method. If more than 70% of districts across the state show a correlation, then this method will answer true. If it's less than 70% we'll answer false.
 
     #even before this special "STATEWIDE" method, we need a method that calculates the kindergarten_participation_against_high_school_graduation for every district, put these results into an array.
