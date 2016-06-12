@@ -56,14 +56,20 @@ class HeadcountAnalyst
 
     if validate_district_input(district_1) && validate_district_input(state)
 
-    truncate(kindergarten_participation_rate_variation(district_1, state) / high_school_graduation_rate_variation(district_1, state))
+      result =
+      truncate(kindergarten_participation_rate_variation(district_1, state)) / truncate(high_school_graduation_rate_variation(district_1, state))
+      if result.nan?
+        0
+      else
+        truncate(result)
+      end
     end
   end
 
   def kindergarten_participation_correlates_with_high_school_graduation(district)
     district = check_for_statewide_as_argument(district)
     if district == "STATEWIDE"
-      list_of_all_districts
+      districts_correlate_across_state?
     elsif validate_district_input(district)
     against = kindergarten_participation_against_high_school_graduation(district)
       if against >= 0.6 && against <= 1.5
@@ -74,23 +80,24 @@ class HeadcountAnalyst
     end
   end
 
-  def list_of_all_districts
-    "test"
-    # statewide = district_repository.district_collection.keys #except for the word "Colorado"
-
+  def correlation_of_all_districts
+   district_repository.district_collection.keys.delete("COLORADO")
+   correlation_array = district_repository.district_collection.keys.map do |district|
+      kindergarten_participation_correlates_with_high_school_graduation(district)
+    end
+    correlation_number = correlation_array.select do |item|
+      item == true
+    end.length
+    truncate(correlation_number/correlation_array.length.to_f)
   end
 
-
-
-  # def check_if_statewide
-  #
-  # end
-    #if district(the argument passed in above) is "STATEWIDE" then kick to another method. If more than 70% of districts across the state show a correlation, then this method will answer true. If it's less than 70% we'll answer false.
-
-    #even before this special "STATEWIDE" method, we need a method that calculates the kindergarten_participation_against_high_school_graduation for every district, put these results into an array.
-
-    #then we say if 70% or more of these numbers in the above array are between 0.6 and 1.5 return true, else false.
-
+  def districts_correlate_across_state?
+    if correlation_of_all_districts >= 0.7
+        true
+      else
+        false
+      end
+  end
 
   def get_hash(dist_or_state)
    hash = district_repository.district_collection.fetch(dist_or_state).enrollment.enrollment_data[:kindergarten_participation]
