@@ -25,7 +25,7 @@ class HeadcountAnalystTest < Minitest::Test
     dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv"}})
     ha = HeadcountAnalyst.new(dr)
 
-    assert_equal 0.447, ha.kindergarten_participation_rate_variation('ACADEMY 20', :against => 'YUMA SCHOOL DISTRICT 1')
+    assert_equal 0.446, ha.kindergarten_participation_rate_variation('ACADEMY 20', :against => 'YUMA SCHOOL DISTRICT 1')
     assert_equal nil, ha.kindergarten_participation_rate_variation('NEW YORK', :against => 'YUMA SCHOOL DISTRICT 1')
   end
 
@@ -34,7 +34,7 @@ class HeadcountAnalystTest < Minitest::Test
     dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv", :high_school_graduation => "./data/High school graduation rates.csv"}})
     ha = HeadcountAnalyst.new(dr)
 
-    assert_equal 1.195, ha.high_school_graduation_rate_variation('ACADEMY 20', :against => 'COLORADO')
+    assert_equal 1.194, ha.high_school_graduation_rate_variation('ACADEMY 20', :against => 'COLORADO')
     assert_equal nil, ha.high_school_graduation_rate_variation('PLACE', :against => 'COLORADO')
     assert_equal nil, ha.high_school_graduation_rate_variation('ACADEMY 20', :against => 'NOT COLORADO')
   end
@@ -44,7 +44,9 @@ class HeadcountAnalystTest < Minitest::Test
     dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv"}})
     ha = HeadcountAnalyst.new(dr)
 
-    assert_equal 0.447, ha.kindergarten_participation_rate_variation('ACADEMY 20', :against => 'YUMA SCHOOL DISTRICT 1')
+    assert_in_delta 0.447, ha.kindergarten_participation_rate_variation('ACADEMY 20', :against => 'YUMA SCHOOL DISTRICT 1'), 0.005
+
+    assert_equal 0.446, ha.kindergarten_participation_rate_variation('ACADEMY 20', :against => 'YUMA SCHOOL DISTRICT 1')
     assert_equal nil, ha.kindergarten_participation_rate_variation('NEW YORK', :against => 'YUMA SCHOOL DISTRICT 1')
     assert_equal nil, ha.kindergarten_participation_rate_variation('ACADEMY 20', :against => 'NEW YORK')
   end
@@ -54,7 +56,7 @@ class HeadcountAnalystTest < Minitest::Test
     dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv"}})
     ha = HeadcountAnalyst.new(dr)
 
-    assert_equal 0.4064509090909091, ha.average('ACADEMY 20', :kindergarten_participation)
+    assert_equal 0.4060909090909091, ha.average('ACADEMY 20', :kindergarten_participation)
   end
 
   def test_kindergarten_participation_rate_variation_trend_method
@@ -62,7 +64,7 @@ class HeadcountAnalystTest < Minitest::Test
     dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv"}})
     ha = HeadcountAnalyst.new(dr)
 
-    assert_equal ({2004 => 1.257, 2005 => 0.96, 2006 => 1.05, 2007 => 0.992, 2008 => 0.717, 2009 => 0.652, 2010 => 0.681, 2011 => 0.727, 2012 => 0.688, 2013 => 0.694, 2014 => 0.661}), ha.kindergarten_participation_rate_variation_trend('ACADEMY 20', :against => 'COLORADO')
+    assert_equal ({2007=>0.992, 2006=>1.05, 2005=>0.960, 2004=>1.258, 2008=>0.717, 2009=>0.652, 2010=>0.681, 2011=>0.727, 2012=>0.687, 2013=>0.693, 2014=>0.661}), ha.kindergarten_participation_rate_variation_trend('ACADEMY 20', :against => 'COLORADO')
   end
 
 #truncate one of the assertions
@@ -98,22 +100,21 @@ class HeadcountAnalystTest < Minitest::Test
     dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv"}})
     ha = HeadcountAnalyst.new(dr)
 
-    assert_equal ({2007=>0.39159, 2006=>0.35364, 2005=>0.26709, 2004=>0.30201, 2008=>0.38456, 2009=>0.39, 2010=>0.43628, 2011=>0.489, 2012=>0.47883, 2013=>0.48774, 2014=>0.49022}), ha.get_hash('ACADEMY 20')
+    assert_equal ({2007=>0.391, 2006=>0.353, 2005=>0.267, 2004=>0.302, 2008=>0.384, 2009=>0.390, 2010=>0.436, 2011=>0.489, 2012=>0.478, 2013=>0.487, 2014=>0.490}), ha.get_hash('ACADEMY 20')
 
     assert_equal ({2007=>0.0, 2006=>0.0, 2005=>0.0, 2004=>0.0, 2008=>0.0, 2009=>0.0, 2010=>0.0, 2011=>0.0, 2012=>0.0, 2013=>0.0, 2014=>0.0}), ha.get_hash('WEST YUMA COUNTY RJ-1')
   end
 
-  def test_that_includes_all_district_names #modify depending on refactor
-    skip
-    dr = DistrictRepository.new
-    dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv", :high_school_graduation => "./data/High school graduation rates.csv"}})
-    ha = HeadcountAnalyst.new(dr)
-
-    assert_equal 181, ha.list_of_all_districts.length
-  end
+  # def test_that_includes_all_district_names #modify depending on refactor
+  #   skip
+  #   dr = DistrictRepository.new
+  #   dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv", :high_school_graduation => "./data/High school graduation rates.csv"}})
+  #   ha = HeadcountAnalyst.new(dr)
+  #
+  #   assert_equal 181, ha.list_of_all_districts.length
+  # end
 
   def test_correlation_across_subset_of_districts
-    # skip
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv", :high_school_graduation => "./data/High school graduation rates.csv"}})
     ha = HeadcountAnalyst.new(dr)
