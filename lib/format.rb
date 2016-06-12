@@ -30,7 +30,7 @@ module Format
         district_input.fetch(:for).upcase
       elsif
         district_input.has_key?(:across)
-        districts_correlate_among_themselves?(district_input)
+        district_input[:across]
       end
     else
       district_input.to_s.upcase

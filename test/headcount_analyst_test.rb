@@ -113,11 +113,20 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_correlation_across_subset_of_districts
+    # skip
     dr = DistrictRepository.new
     dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv", :high_school_graduation => "./data/High school graduation rates.csv"}})
     ha = HeadcountAnalyst.new(dr)
 
-    assert_equal 0.123, ha.correlation_across_subset_of_districts(:across => ['AKRON R-1', 'ASPEN 1', 'BUENA VISTA R-31', 'ACADEMY 20'])
+    assert_equal 1.0, ha.correlation_across_subset_of_districts(['AKRON R-1', 'ASPEN 1', 'BUENA VISTA R-31', 'ACADEMY 20'])
+  end
+
+  def test_kindergarten_participation_correlates_with_high_school_graduation_subset_of_districts
+    dr = DistrictRepository.new
+    dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv", :high_school_graduation => "./data/High school graduation rates.csv"}})
+    ha = HeadcountAnalyst.new(dr)
+
+    assert ha.kindergarten_participation_correlates_with_high_school_graduation(:across => ['AKRON R-1', 'ASPEN 1', 'BUENA VISTA R-31', 'ACADEMY 20'])
   end
 
 end

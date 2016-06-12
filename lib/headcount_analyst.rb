@@ -68,19 +68,19 @@ class HeadcountAnalyst
 
   def kindergarten_participation_correlates_with_high_school_graduation(district)
     district = check_argument_format(district)
-    # if district[:across].length > 1
-    #   districts_correlate_among_themselves?
-    if district == "STATEWIDE"
+    if district.is_a?Array
+      districts_correlate_among_themselves?(district)
+    elsif district == "STATEWIDE"
       districts_correlate_across_state?
     elsif validate_district_input(district)
-    against = kindergarten_participation_against_high_school_graduation(district)
+      against = kindergarten_participation_against_high_school_graduation(district)
       if against >= 0.6 && against <= 1.5
         true
       else
         false
       end
     end
-  end
+end
 
   def correlation_of_all_districts
    district_repository.district_collection.keys.delete("COLORADO")
@@ -93,19 +93,15 @@ class HeadcountAnalyst
     truncate(correlation_number/correlation_array.length.to_f)
   end
 
-  #we give the above method a different array.
-    #need to check if the district in this array exists in the list of districts
-      #if it does - check through the entire array of district_repository.district_collection.keys
-      #else return nil
-  def correlation_across_subset_of_districts(across_hash)
-    subset_collection = across_hash[:across]#should be an array
-    subset_collection.map do |district|
+  def correlation_across_subset_of_districts(district_array)
+    result = district_array.map do |district|
        kindergarten_participation_correlates_with_high_school_graduation(district)
      end
-     correlation_number = subset_collection.select do |item|
+     correlation_number = result.select do |item|
        item == true
      end.length
-     truncate(correlation_number/subset_collection.length.to_f)
+
+     truncate(correlation_number/district_array.length.to_f)
   end
 
   def districts_correlate_across_state?
@@ -116,8 +112,8 @@ class HeadcountAnalyst
       end
   end
 
-  def districts_correlate_among_themselves?(across_hash)
-    if correlation_across_subset_of_districts(across_hash) >= 0.7
+  def districts_correlate_among_themselves?(district_array)
+    if correlation_across_subset_of_districts(district_array) >= 0.7
         true
       else
         false
