@@ -67,7 +67,9 @@ class HeadcountAnalyst
   end
 
   def kindergarten_participation_correlates_with_high_school_graduation(district)
-    district = check_for_statewide_as_argument(district)
+    district = check_argument_format(district)
+    # if district[:across].length > 1
+    #   districts_correlate_among_themselves?
     if district == "STATEWIDE"
       districts_correlate_across_state?
     elsif validate_district_input(district)
@@ -91,8 +93,31 @@ class HeadcountAnalyst
     truncate(correlation_number/correlation_array.length.to_f)
   end
 
+  #we give the above method a different array.
+    #need to check if the district in this array exists in the list of districts
+      #if it does - check through the entire array of district_repository.district_collection.keys
+      #else return nil
+  def correlation_across_subset_of_districts(across_hash)
+    subset_collection = across_hash[:across]#should be an array
+    subset_collection.map do |district|
+       kindergarten_participation_correlates_with_high_school_graduation(district)
+     end
+     correlation_number = subset_collection.select do |item|
+       item == true
+     end.length
+     truncate(correlation_number/subset_collection.length.to_f)
+  end
+
   def districts_correlate_across_state?
     if correlation_of_all_districts >= 0.7
+        true
+      else
+        false
+      end
+  end
+
+  def districts_correlate_among_themselves?(across_hash)
+    if correlation_across_subset_of_districts(across_hash) >= 0.7
         true
       else
         false
@@ -102,8 +127,6 @@ class HeadcountAnalyst
   def get_hash(dist_or_state)
    hash = district_repository.district_collection.fetch(dist_or_state).enrollment.enrollment_data[:kindergarten_participation]
    Hash[hash.sort]
-#    #Hash[hash.sort]
-# => {2004=>0.30201, 2005=>0.26709, 2006=>0.35364, 2007=>0.39159, 2008=>0.38456, 2009=>0.39, 2010=>0.43628, 2011=>0.489, 2012=>0.47883, 2013=>0.48774, 2014=>0.49022}
   end
 
 

@@ -24,17 +24,17 @@ module Format
     district_repository.district_collection.include?(district_input)
   end
 
-  def check_for_statewide_as_argument(district_input)
+  def check_argument_format(district_input)
     if district_input.class == Hash
-      district_input.fetch(:for).upcase
+      if district_input.has_key?(:for)
+        district_input.fetch(:for).upcase
+      elsif
+        district_input.has_key?(:across)
+        districts_correlate_among_themselves?(district_input)
+      end
     else
       district_input.to_s.upcase
     end
   end
-
-
-  def clean_numerical_data
-  end
-
 
 end
