@@ -1,7 +1,15 @@
 module Format
 
   def truncate(number)
-    (number * 1000).floor / 1000.to_f
+    if is_number?(number)
+      (number * 1000).floor / 1000.to_f
+    else
+      truncate(number.to_f)
+    end
+  end
+
+  def is_number?(string)
+    true if Float(string) rescue false
   end
 
   def format_district_input(district_input)
@@ -24,6 +32,9 @@ module Format
     end
   end
 
+
+  def clean_numerical_data
+  end
 
 
 end

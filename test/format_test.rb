@@ -8,6 +8,9 @@ class FormatTest < Minitest::Test
 
     assert_equal 0.391, e.truncate(0.3915)
     assert_equal 0.391, e.truncate(0.391567)
+    assert_equal 0.0, e.truncate(0.0)
+    assert_equal 0.0, e.truncate(0)
+    assert_equal 0.0, e.truncate('NaN')
   end
 
 end
