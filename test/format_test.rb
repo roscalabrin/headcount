@@ -11,6 +11,8 @@ class FormatTest < Minitest::Test
     assert_equal 0.0, e.truncate(0.0)
     assert_equal 0.0, e.truncate(0)
     assert_equal 0.0, e.truncate('NaN')
+    assert_equal 0.390, e.truncate(0.39)
+    assert_equal 0.300, e.truncate(0.3)
   end
 
 end
