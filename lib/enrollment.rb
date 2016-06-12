@@ -29,7 +29,6 @@ class Enrollment
   end
 
   def graduation_rate_by_year
-
     graduation_rate_by_year = enrollment_data[:high_school_graduation_rates]
     graduation_rate_by_year.map do |key, value|
       graduation_rate_by_year[key] = truncate(value)
