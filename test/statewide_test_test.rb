@@ -101,6 +101,22 @@ class StatewideTestTest < Minitest::Test
       statewide_test.proficient_for_subject_by_grade_in_year(:math, 3, 2005)
     end
   end
+
+  def test_proficient_for_subject_by_race_in_year
+    statewide_test = StatewideTest.new({:name => "ACADEMY 20",
+                                        3 => {2010 => {:math => 0.1234 , :writing => 0.1234 , :reading => 0.1234}, 2011 => {:math => 0.1234 , :writing => 0.1234 , :reading => 0.1234}},
+                                        8 => {2010 => {:math => 0.1234 , :writing => 0.1234 , :reading => 0.1234}, 2011 => {:math => 0.1234 , :writing => 0.1234 , :reading => 0.1234}},
+                                        :asian => {2011 => {math: 0.816, reading: 0.897, writing: 0.826}, 2012 => {math: 0.818, reading: 0.893, writing: 0.808}, 2013 => {math: 0.805, reading: 0.901, writing: 0.810}, 2014 => {math: 0.800, reading: 0.855, writing: 0.789}},
+                                        :black => {2010 => {:math => 0.1234 , :writing => 0.1234 , :reading => 0.1234} , 2011 => {:math => 0.1234 , :writing => 0.1234 , :reading => 0.1234}}})
+    assert_equal 0.818, statewide_test.proficient_for_subject_by_race_in_year(:math, :asian, 2012)
+
+    assert_raises("UnknownDataError") do
+      statewide_test.proficient_for_subject_by_race_in_year(:math, :cylon, 2008)
+    end
+
+    
+  end
+
 end
 
 # :district_name =>
