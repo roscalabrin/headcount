@@ -9,7 +9,6 @@ module Parser2
      statewide_test_array <<
      ({:name => row[:location].upcase, :year => row[:timeframe].to_i, row[argument].to_s.downcase => truncate(row[:data].to_f)})
    end
-      # binding.pry
    group_data(statewide_test_array, key)
   end
 
