@@ -10,8 +10,8 @@ class DistrictRepository
 
   def initialize
     @district_collection = {}
-    # @enrollment_repo = {}
     @enrollment_repo = EnrollmentRepository.new
+    # @statewide_repo = StateWideRepository.new
   end
 
   def load_data(file_tree)

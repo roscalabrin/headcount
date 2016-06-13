@@ -2,7 +2,11 @@ module Format
 
   def truncate(number)
     if is_number?(number)
-      (number * 1000).floor / 1000.to_f
+      if number.to_s.length >= 5
+        (number * 1000).floor / 1000.to_f
+      elsif number.to_s.length < 5
+        number.to_s.ljust(5, "0").to_f
+      end
     else
       truncate(number.to_f)
     end

@@ -3,7 +3,7 @@ module Parser
   def csv_parser(filepath, key)
    enrollment_array = []
    CSV.foreach(filepath, headers: true, header_converters: :symbol) do |row|
-     enrollment_array << ({:name => row[:location].upcase, row[:timeframe].to_i => row[:data].to_f})
+     enrollment_array << ({:name => row[:location].upcase, row[:timeframe].to_i => truncate(row[:data].to_f)})
    end
    parse_data(enrollment_array, key)
   end

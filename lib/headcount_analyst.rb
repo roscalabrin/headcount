@@ -122,7 +122,7 @@ end
 
   def get_hash(dist_or_state)
    hash = district_repository.district_collection.fetch(dist_or_state).enrollment.enrollment_data[:kindergarten_participation]
-   Hash[hash.sort]
+   Hash[hash]
   end
 
 
