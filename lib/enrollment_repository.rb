@@ -1,11 +1,11 @@
 require 'pry'
 require 'csv'
 require_relative 'enrollment'
-require_relative 'parser'
+require_relative 'enrollment_parser'
 
 class EnrollmentRepository
   include Format
-  include Parser
+  include EnrollmentParser
 
   attr_reader :enrollment_collection
 
@@ -41,7 +41,7 @@ class EnrollmentRepository
     end
   end
 
-  def find_by_name(district_name)# fix this method
+  def find_by_name(district_name)
     enrollment_collection[district_name]
   end
 

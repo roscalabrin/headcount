@@ -145,7 +145,6 @@ class HeadcountAnalystTest < Minitest::Test
     assert_equal ({2007=>0.992, 2006=>1.05, 2005=>0.960, 2004=>1.258, 2008=>0.717, 2009=>0.652, 2010=>0.681, 2011=>0.727, 2012=>0.687, 2013=>0.693, 2014=>0.661}), ha.kindergarten_participation_rate_variation_trend('ACADEMY 20', :against => 'COLORADO')
   end
 
-#truncate one of the assertions
   def test_kindergarten_participation_against_high_school_graduation
     dr = DistrictRepository.new
     dr.load_data({
@@ -234,16 +233,8 @@ class HeadcountAnalystTest < Minitest::Test
     assert_equal ({2007=>0.0, 2006=>0.0, 2005=>0.0, 2004=>0.0, 2008=>0.0, 2009=>0.0, 2010=>0.0, 2011=>0.0, 2012=>0.0, 2013=>0.0, 2014=>0.0}), ha.get_hash('WEST YUMA COUNTY RJ-1')
   end
 
-  # def test_that_includes_all_district_names #modify depending on refactor
-  #   skip
-  #   dr = DistrictRepository.new
-  #   dr.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv", :high_school_graduation => "./data/High school graduation rates.csv"}})
-  #   ha = HeadcountAnalyst.new(dr)
-  #
-  #   assert_equal 181, ha.list_of_all_districts.length
-  # end
-
   def test_correlation_across_subset_of_districts
+    skip
     dr = DistrictRepository.new
     dr.load_data({
     :enrollment => {
@@ -265,6 +256,7 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_kindergarten_participation_correlates_with_high_school_graduation_subset_of_districts
+    skip
     dr = DistrictRepository.new
     dr.load_data({
     :enrollment => {

@@ -1,6 +1,6 @@
 require_relative 'format'
 
-module Parser2
+module StatewideTestParser
   include Format
 
   def csv_parser(filepath, argument, key)

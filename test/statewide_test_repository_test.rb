@@ -34,7 +34,6 @@ class StatewideTestRepositoryTest < Minitest::Test
     assert_instance_of StatewideTest, statewide_test
   end
 
-
   def test_it_returns_the_name_of_the_district
     str = StatewideTestRepository.new
     str.load_data({

@@ -1,11 +1,11 @@
 require 'pry'
 require 'csv'
-require_relative 'statewide_test_repository'
-require_relative 'parser2'
+require_relative 'statewide_test'
+require_relative 'statewide_test_parser'
 
 class StatewideTestRepository
   include Format
-  include Parser2
+  include StatewideTestParser
 
   attr_reader :statewide_test_collection
 
@@ -19,10 +19,8 @@ class StatewideTestRepository
    math_array = csv_parser(file_tree[:statewide_testing][:math], :race_ethnicity, :math)
    reading_array = csv_parser(file_tree[:statewide_testing][:reading], :race_ethnicity, :reading)
    writing_array = csv_parser(file_tree[:statewide_testing][:writing], :race_ethnicity, :writing)
-  #  binding.pry
-
+  
   merge_data(third_grade_array, eighth_grade_array, math_array, reading_array, writing_array)
-
   end
 
   def merge_data(third_grade_array, eighth_grade_array, math_array, reading_array, writing_array)
