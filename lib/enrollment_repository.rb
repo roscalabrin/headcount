@@ -25,7 +25,7 @@ class EnrollmentRepository
        merge_data(kindergarten_array, high_school_array)
      end
 #find a way to dynamically pass in the key (i.e. :kindergarten, or high_school_graduation, or whatever)
-#maybe make a method that just extracts the filepath dynamically (def extract filepath, takes in the actual key as an arg)
+#maybe make a method that just extracts the filepath dynamically (def extract filepath, takes in the actual key as an
   end
 
   def merge_data(kindergarten_array, high_school_array)
@@ -33,6 +33,7 @@ class EnrollmentRepository
       kindergarten_array.reduce(&:merge)
     end
     create_enrollment_object(enrollment_info)
+    binding.pry
   end
 
   def create_enrollment_object(enrollment_info)

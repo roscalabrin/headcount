@@ -17,6 +17,7 @@ module Parser
       end
     end
     finalize_load_data(array_2, key)
+
   end
 
   def finalize_load_data(array_2, key)
@@ -24,6 +25,7 @@ module Parser
       item[key].delete(:name)
       item
     end
+      binding.pry
   end
 
 
