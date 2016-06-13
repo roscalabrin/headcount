@@ -13,54 +13,35 @@ module Parser2
   end
 
   def parse_data(statewide_test_array, key)
-    new_array = statewide_test_array.group_by { |a| a.values.first }
-    grouped_data = new_array.map do |_, second_pair|
+    grouped_data = statewide_test_array.group_by { |a| a.values.first }
+    grouped_data_years = grouped_data.map do |_, second_pair|
       second_pair.group_by { |a| a[:year] }
     end
 
-    xx = grouped_data.map do |item|
-     item.map{|_, second_pair| second_pair.reduce(:merge)}
-    end
+    grouped_array = grouped_data_years.map do |item|
+     item.map{|_, second_pair| second_pair.reduce(:merge)}.flatten
+   end
 
-    xxx = xx.map do |hash|
+    array_by_district = grouped_array.map do |hash|
      hash.group_by do |key, value|
        key[:name]
      end
     end
 
-    xxx.flatten.map do |hash|
+    array_by_district.flatten.map do |hash|
       hash.values.flatten.map do |hash|
         hash.delete(:name)
         hash.flatten
       end
-
     end
 
-    array_2 = xxx.reduce({}) do |result, item|
-      xxx.map do |item|
-
-        {:name => item.keys.join, key => item.flatten}
-        # b= item
+    statewide_parsed_array = array_by_district.reduce({}) do |result, item|
+      array_by_district.map do |item|
+        item.values.flatten
+        {:name => item.keys.join, key => item.values.flatten}
       end
     end
-binding.pry
+# binding.pry
   end
 
-  # def finalize_load_data(array_2, key)
-  #   final = array_2.map do |item|
-  #     item[key].delete(:name)
-  #     item
-  #     binding.pry
-  #   end
-
-
-
-
-  # def finalize_load_data(array_2, key)
-  #   final = array_2.map do |item|
-  #     item[key].delete(:name)
-  #     item
-  #   end
-  #
-  # end
 end
