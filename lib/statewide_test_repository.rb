@@ -1,6 +1,6 @@
 require 'pry'
 require 'csv'
-require_relative 'statewide_test'
+require_relative 'statewide_test_repository'
 require_relative 'parser2'
 
 class StatewideTestRepository
