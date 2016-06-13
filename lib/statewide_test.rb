@@ -37,13 +37,13 @@ class StatewideTest
     end
   end
 
-  # def kindergarten_participation_by_year
-  #  participation_by_year = enrollment_data[:kindergarten_participation]
-  #  participation_by_year.map do |key, value|
-  #    participation_by_year[key] = truncate(value)
-  #  end
-  #  participation_by_year
-  # end
-  #
+  def proficient_for_subject_by_race_in_year(subject, race, year)
+    if statewide_test_data[race] == nil ||
+      statewide_test_data[race][year] == nil || statewide_test_data[race][year][subject] == nil
+      raise ArgumentError, "UnknownDataError"
+    else
+      statewide_test_data[race][year][subject]
+    end
+  end
 
 end
