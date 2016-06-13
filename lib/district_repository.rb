@@ -33,10 +33,8 @@ class DistrictRepository
     if district_collection[district_name.upcase].nil?
       nil
     else
-      # district_collection[district_name.upcase].enrollment =  enrollment_repo.enrollment_collection[district_name]
       district_collection[district_name.upcase]
     end
-    # binding.pry
   end
 
   def find_all_matching(district_name_fragment)

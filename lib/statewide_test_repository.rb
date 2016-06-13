@@ -20,25 +20,29 @@ class StatewideTestRepository
    reading_array = csv_parser(file_tree[:statewide_testing][:reading], :race_ethnicity, :reading)
    writing_array = csv_parser(file_tree[:statewide_testing][:writing], :race_ethnicity, :writing)
   #  binding.pry
-   merge_data(third_grade_array, eighth_grade_array)
+
+  merge_data(third_grade_array, eighth_grade_array, math_array, reading_array, writing_array)
 
   end
 
-  def merge_data(third_grade_array, eighth_grade_array)
-    statewide_info = third_grade_array.zip(eighth_grade_array).map do |third_grade_array|
-       third_grade_array.reduce(&:merge)
-    end
-    create_statewide_object(statewide_info)
- # binding.pry
+  def merge_data(third_grade_array, eighth_grade_array, math_array, reading_array, writing_array)
+  statewide_info = third_grade_array.zip(eighth_grade_array).map do |hash|
+       hash.reduce(&:merge)
+    end.zip(math_array).map do |hash|
+         hash.reduce(&:merge)
+      end.zip(reading_array).map do |hash|
+           hash.reduce(&:merge)
+         end.zip(writing_array).map do |hash|
+              hash.reduce(&:merge)
+            end
+     create_statewide_object(statewide_info)
   end
-
 
   def create_statewide_object(statewide_info)
     statewide_info.map do |item|
       statewide_object = StatewideTest.new(item)
       statewide_test_collection[item[:name]] = statewide_object
     end
-      # binding.pry
   end
 
   def find_by_name(district_name)
