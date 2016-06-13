@@ -1,5 +1,6 @@
 require 'pry'
 require_relative 'format'
+require_relative 'district_repository'
 
 class StatewideTest
   include Format
@@ -13,14 +14,17 @@ class StatewideTest
   end
 
   def proficient_by_grade(grade)
+  binding.pry
     if statewide_test_data.key?(grade) == false
       raise ArgumentError, "UnknownDataError"
     else
       statewide_test_data[grade]
+
     end
   end
 
   def proficient_by_race_or_ethnicity(race)
+    # binding.pry
     if statewide_test_data.key?(race) == false
       raise ArgumentError, "UnknownRaceError"
     else
