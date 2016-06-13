@@ -24,8 +24,6 @@ class EnrollmentRepository
        high_school_array = csv_parser(filepath_2, :high_school_graduation_rates)
        merge_data(kindergarten_array, high_school_array)
      end
-#find a way to dynamically pass in the key (i.e. :kindergarten, or high_school_graduation, or whatever)
-#maybe make a method that just extracts the filepath dynamically (def extract filepath, takes in the actual key as an
   end
 
   def merge_data(kindergarten_array, high_school_array)
@@ -33,14 +31,13 @@ class EnrollmentRepository
       kindergarten_array.reduce(&:merge)
     end
     create_enrollment_object(enrollment_info)
-    binding.pry
+    # binding.pry
   end
 
   def create_enrollment_object(enrollment_info)
     enrollment_info.map do |item|
       enrollment_object = Enrollment.new(item)
       enrollment_collection[item[:name]] = enrollment_object
-
     end
   end
 
