@@ -29,7 +29,7 @@ class StatewideTestRepository
        third_grade_array.reduce(&:merge)
     end
     create_statewide_object(statewide_info)
- binding.pry
+ # binding.pry
   end
 
 
