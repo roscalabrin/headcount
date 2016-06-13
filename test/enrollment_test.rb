@@ -45,6 +45,4 @@ class EnrollmentTest < Minitest::Test
     assert_equal nil, e.graduation_rate_in_year(2009)
   end
 
-
-
 end

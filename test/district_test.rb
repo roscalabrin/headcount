@@ -2,7 +2,7 @@ require_relative 'test_helper'
 require_relative '../lib/district'
 
 class DistrictTest < Minitest::Test
-
+  
   def test_that_district_exists
     d = District.new({:name => "ACADEMY 20"})
 

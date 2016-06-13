@@ -1,4 +1,4 @@
-module Parser
+module EnrollmentParser
 
   def csv_parser(filepath, key)
    enrollment_array = []

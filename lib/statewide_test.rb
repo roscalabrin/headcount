@@ -24,47 +24,49 @@ class StatewideTest
     end
   end
 
+  def proficient_by_race_or_ethnicity(race)
+    valid_race_or_ethnicity?(race)
+  end
+
   def valid_race_or_ethnicity?(race)
     races = statewide_test_data[:math][0].keys
     races.shift
       if races.include?(race.to_s.downcase)
-        proficient_by_race_or_ethnicity(race)
-        # something(race.to_s.downcase)
+        query_proficient_by_race_or_ethnicity(race.to_s.downcase)
       else
         raise ArgumentError, "UnknownRaceError"
       end
   end
 
-  #   if statewide_test_data.key?(race) == false
-  #     binding.pry
-  #
-  #   else
-  # end
-
-  def proficient_by_race_or_ethnicity(race)
-    valid_race_or_ethnicity?(race)
-  # end
-  #
-  # def something(race)
+  def query_proficient_by_race_or_ethnicity(race)
       math_array = statewide_test_data[:math].map do |hash|
         {hash[:year]=>hash[race.to_s.downcase]}
       end
-
       reading_array = statewide_test_data[:reading].map do |hash|
         {hash[:year]=>hash[race.to_s.downcase]}
       end
-
       writing_array = statewide_test_data[:writing].map do |hash|
         {hash[:year]=>hash[race.to_s.downcase]}
       end
 
       combined = [math_array, reading_array, writing_array].transpose.each do |math, reading, writing| p [math, reading, writing]
       end
-
       result = combined.map do |array|
         {array[0].keys.join.to_i => {math: array[0].values.join.to_f, reading: array[1].values.join.to_f, writing: array[2].values.join.to_f}}
       end
       result.reduce({}, :merge)
+  end
+
+  def valid_subject?(subject, grade, year)
+    statewide_test_data.keys
+      if races.include?(grade) && races.include?(subject.to_s.downcase)
+        # querry_proficient_by_race_or_ethnicity(race.to_s.downcase)
+      else
+        raise ArgumentError, "UnknownRaceError"
+      end
+  end
+
+  def valid_year?(subject, grade, year)
   end
 
   def proficient_for_subject_by_grade_in_year(subject, grade, year)
