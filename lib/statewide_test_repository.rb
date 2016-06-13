@@ -14,11 +14,11 @@ class StatewideTestRepository
   end
 
   def load_data(file_tree)
-   third_grade_array = csv_parser(file_tree[:statewide_testing][:third_grade], 3)
-   eighth_grade_array = csv_parser(file_tree[:statewide_testing][:eighth_grade], 8)
-  #  math_array = csv_parser(file_tree[:statewide_testing][:math], :math)
-  #  reading_array = csv_parser(file_tree[:statewide_testing][:reading], :reading)
-  #  writing_array = csv_parser(file_tree[:statewide_testing][:writing], :writing)
+   third_grade_array = csv_parser(file_tree[:statewide_testing][:third_grade], :score, 3)
+   eighth_grade_array = csv_parser(file_tree[:statewide_testing][:eighth_grade], :score, 8)
+   math_array = csv_parser(file_tree[:statewide_testing][:math], :race_ethnicity, :math)
+   reading_array = csv_parser(file_tree[:statewide_testing][:reading], :race_ethnicity, :reading)
+   writing_array = csv_parser(file_tree[:statewide_testing][:writing], :race_ethnicity, :writing)
   #  binding.pry
    merge_data(third_grade_array, eighth_grade_array)
 
@@ -29,8 +29,9 @@ class StatewideTestRepository
        third_grade_array.reduce(&:merge)
     end
     create_statewide_object(statewide_info)
-
+ # binding.pry
   end
+
 
   def create_statewide_object(statewide_info)
     statewide_info.map do |item|
