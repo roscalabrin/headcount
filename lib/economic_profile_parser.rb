@@ -3,32 +3,53 @@ require_relative 'format'
 module EconomicProfileParser
   include Format
 
-  def csv_parser_household(filepath)
-   household_economic_profile_array = []
+  def csv_parser_household(filepath, key)
+   household_array = []
    CSV.foreach(filepath, headers: true, header_converters: :symbol) do |row|
-     household_economic_profile_array <<
-     ({:name => row[:location].upcase, row[:timeframe].split("-") => truncate(row[:data].to_f)})
+     household_array <<
+     ({:name => row[:location].upcase, row[:timeframe].split("-") => row[:data].to_i})
    end
-  #  group_data(statewide_test_array, key)
+   parse_data(household_array, key)
   end
 
-  def csv_parser_children(filepath)
-   children_economic_profile_array = []
+  def csv_parser_children(filepath, key)
+   children_array = []
    CSV.foreach(filepath, headers: true, header_converters: :symbol) do |row|
-     children_economic_profile_array <<
-     ({:name => row[:location].upcase, row[:timeframe].to_s => truncate(row[:data].to_f)})
+     if row[:dataformat] == "Percent"
+       children_array <<
+       ({:name => row[:location].upcase, row[:timeframe].to_s => truncate(row[:data].to_f)})
+     end
    end
-  #  group_data(statewide_test_array, key)
+   parse_data(children_array, key)
   end
 
-  def csv_parser_lunch(filepath, argument)
-   lunch_economic_profile_array = []
+  def csv_parser_lunch(filepath, key)
+   lunch_array = []
    CSV.foreach(filepath, headers: true, header_converters: :symbol) do |row|
-     lunch_economic_profile_array <<
-     ({:name => row[:location].upcase, :year => row[:timeframe].to_i,  row[argument].to_s.downcase => truncate(row[:data].to_f)})
-   end
-   binding.pry
-  #  group_data(statewide_test_array, key)
+     if row[:poverty_level] == "Eligible for Free or Reduced Lunch"
+       if row[:dataformat] == "Percent"
+          x = {:percentage => truncate(row[:data].to_f)}
+        else
+          x = {:number => truncate(row[:data].to_f)}
+        end
+       lunch_array <<
+       ({:name => row[:location].upcase, :year => row[:timeframe].to_i, :poverty_level => x})
+     end
+    end
+    lunch_array
+    # binding.pry
+  end
+
+   def csv_parser_title_i(filepath, key)
+    title_i_array = []
+    CSV.foreach(filepath, headers: true, header_converters: :symbol) do |row|
+      title_i_array <<
+       ({:name => row[:location].upcase, row[:timeframe].to_i => truncate(row[:data].to_f)})
+    end
+   parse_data(title_i_array, key)
+  end
+
+  def combine_imported_data_from_files
   end
 
   def group_data(statewide_test_array, key)
@@ -67,5 +88,25 @@ module EconomicProfileParser
     end
 # binding.pry
   end
+
+#########################
+  def parse_data(array, key)
+   new_array = array.group_by { |a| a.values.first }.map{|_, second_pair| second_pair.reduce(:merge)}
+
+    array_2 = new_array.reduce({}) do |result, item|
+      new_array.map do |item|
+      {:name => item.values_at(:name).join, key => item}
+      end
+    end
+    finalize_load_data(array_2, key)
+  end
+
+  def finalize_load_data(array_2, key)
+    final = array_2.map do |item|
+      item[key].delete(:name)
+      item
+    end
+  end
+
 
 end
