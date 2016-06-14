@@ -1,5 +1,6 @@
 module Format
 
+#returns N/A for iteration3
   def truncate(number)
     if is_number?(number)
       if number.to_s.length >= 5

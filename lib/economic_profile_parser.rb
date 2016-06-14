@@ -7,7 +7,7 @@ module EconomicProfileParser
    household_array = []
    CSV.foreach(filepath, headers: true, header_converters: :symbol) do |row|
      household_array <<
-     ({:name => row[:location].upcase, row[:timeframe].split("-") => row[:data].to_i})
+     ({:name => row[:location].upcase, row[:timeframe].split("-").map {|num| num.to_i} => row[:data].to_i})
    end
    parse_data(household_array, key)
   end
@@ -17,7 +17,7 @@ module EconomicProfileParser
    CSV.foreach(filepath, headers: true, header_converters: :symbol) do |row|
      if row[:dataformat] == "Percent"
        children_array <<
-       ({:name => row[:location].upcase, row[:timeframe].to_s => truncate(row[:data].to_f)})
+       ({:name => row[:location].upcase, row[:timeframe].to_i => truncate(row[:data].to_f)})
      end
    end
    parse_data(children_array, key)
@@ -49,9 +49,6 @@ module EconomicProfileParser
     end
    parse_data(title_i_array, key)
   end
-
-  # def combine_imported_data_from_files
-  # end
 
   def group_data(lunch_array, key)
     grouped_data = lunch_array.group_by { |a| a.values.first }
@@ -90,7 +87,6 @@ module EconomicProfileParser
         {:name => item.keys.join, key => item.values.flatten}
       end
     end
-# binding.pry
   end
 
   def parse_data(array, key)
