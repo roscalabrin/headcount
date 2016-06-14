@@ -46,7 +46,6 @@ module StatewideTestParser
         {:name => item.keys.join, key => item.values.flatten}
       end
     end
-# binding.pry
   end
 
 end

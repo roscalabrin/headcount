@@ -31,7 +31,6 @@ class EnrollmentRepository
       kindergarten_array.reduce(&:merge)
     end
     create_enrollment_object(enrollment_info)
-    # binding.pry
   end
 
   def create_enrollment_object(enrollment_info)
