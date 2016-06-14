@@ -65,7 +65,7 @@ class StatewideTestTest < Minitest::Test
 
     assert_equal result, statewide_test.proficient_by_grade(3)
 
-    assert_raises("UnknownDataError") do
+    assert_raises(UnknownDataError) do
       statewide_test.proficient_by_grade(2)
       end
   end
@@ -91,7 +91,7 @@ class StatewideTestTest < Minitest::Test
               }
     assert_equal result, statewide_test.proficient_by_race_or_ethnicity(:asian)
 
-    assert_raises("UnknownRaceError") do
+    assert_raises(UnknownRaceError) do
       statewide_test.proficient_by_race_or_ethnicity(:aldebarans)
     end
   end
@@ -112,19 +112,19 @@ class StatewideTestTest < Minitest::Test
 
     assert_equal 0.857, statewide_test.proficient_for_subject_by_grade_in_year(:math, 3, 2008)
 
-    assert_raises("UnknownDataError") do
+    assert_raises(UnknownDataError) do
       statewide_test.proficient_for_subject_by_grade_in_year(:science, 2, 2008)
     end
 
-    assert_raises("UnknownDataError") do
+    assert_raises(UnknownDataError) do
       statewide_test.proficient_for_subject_by_grade_in_year(:math, 1, 2008)
     end
 
-    assert_raises("UnknownDataError") do
+    assert_raises(UnknownDataError) do
       statewide_test.proficient_for_subject_by_grade_in_year(:math, 1, 2005)
     end
 
-    assert_raises("UnknownDataError") do
+    assert_raises(UnknownDataError) do
       statewide_test.proficient_for_subject_by_grade_in_year(:math, 3, 2005)
     end
   end
@@ -145,9 +145,9 @@ class StatewideTestTest < Minitest::Test
 
     statewide_test.proficient_for_subject_by_race_in_year(:math, :asian, 2012)
 
-    assert_raises("UnknownDataError") do
+    assert_raises(UnknownDataError) do
       statewide_test.proficient_for_subject_by_race_in_year(:math, :cylon, 2008)
     end
   end
-
+#
 end

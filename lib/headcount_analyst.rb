@@ -1,7 +1,10 @@
 require 'pry'
 require_relative 'district_repository'
 require_relative 'enrollment'
+require_relative 'statewide_test_repository'
+require_relative 'statewide_test'
 require_relative 'format'
+require_relative 'error'
 
 class HeadcountAnalyst
   include Format
@@ -124,6 +127,8 @@ end
    hash = district_repository.district_collection.fetch(dist_or_state).enrollment.enrollment_data[:kindergarten_participation]
    Hash[hash]
   end
+
+  # def top_statewide_test_year_over_year_growth(grade: grade, subject: = nil, top: = nil)
 
 
 end

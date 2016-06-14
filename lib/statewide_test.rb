@@ -1,6 +1,7 @@
 require 'pry'
 require_relative 'format'
 require_relative 'statewide_test_repository'
+require_relative 'error'
 
 class StatewideTest
   include Format
@@ -15,7 +16,7 @@ class StatewideTest
 
   def proficient_by_grade(grade)
     if statewide_test_data.key?(grade) == false
-      raise ArgumentError, "UnknownDataError"
+      raise UnknownDataError
     else
       result = statewide_test_data[grade].map do |array|
         {array[:year]=>{:math => array["math"], :reading => array["reading"], :writing => array["writing"]}}
@@ -28,7 +29,7 @@ class StatewideTest
     if valid_race_or_ethnicity?(race) == true
       query_proficient_by_race_or_ethnicity(race.to_s.downcase)
     else
-      raise ArgumentError, "UnknownRaceError"
+      raise UnknownRaceError
     end
   end
 
@@ -70,7 +71,7 @@ class StatewideTest
   end
 
   def error
-    raise ArgumentError, "UnknownDataError"
+    raise UnknownDataError
   end
 
   def proficient_for_subject_by_grade_in_year(subject, grade, year)
