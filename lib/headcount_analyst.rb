@@ -125,6 +125,46 @@ end
    hash = district_repository.district_collection.fetch(dist_or_state).enrollment.enrollment_data[:kindergarten_participation]
    Hash[hash]
   end
+  ##################################################SONIAS WORK BEGINS NOW
 
+  def top_statewide_test_year_over_year_growth(grade: nil, subject: nil, top: nil, weighting: nil)
+    if grade.nil?
+      raise InsufficientInformationError
+    elsif grade.nil? == false
+      if
+      district_repository.district_collection["COLORADO"].statewide_test.statewide_test_data.has_key?(grade) == false
+        raise UnknownDataError
+      elsif
+        district_repository.district_collection["COLORADO"].statewide_test.statewide_test_data.has_key?(grade) == true && subject.nil? == false && top.nil? == true && weighting.nil? == true
+        find_single_leader(grade, subject)
+      elsif
+        district_repository.district_collection["COLORADO"].statewide_test.statewide_test_data.has_key?(grade) == true && subject.nil? == false && top.nil? == false && weighting.nil? == true
+        find_multiple_leader(grade, subject, top)
+      elsif
+        district_repository.district_collection["COLORADO"].statewide_test.statewide_test_data.has_key?(grade) == true && subject.nil? == true && top.nil? == true && weighting.nil? == true
+        find_growth_across_all_subjects(grade)
+      elsif
+        district_repository.district_collection["COLORADO"].statewide_test.statewide_test_data.has_key?(grade) == true && subject.nil? == true && top.nil? == true && weighting.nil? == false
+        find_growth_across_all_subjects_with_weighting(grade, weighting)
+      end
+    end
+
+  end
+
+  def find_single_leader(grade, subject)
+    "single leader"
+  end
+
+  def find_multiple_leader(grade, subject, top)
+    "multiple leader"
+  end
+
+  def find_growth_across_all_subjects(grade)
+    "growth"
+  end
+
+  def find_growth_across_all_subjects_with_weighting(grade, weighting)
+    "growth with weighting"
+  end
 
 end

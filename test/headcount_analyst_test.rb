@@ -4,6 +4,7 @@ require_relative '../lib/headcount_analyst'
 class HeadcountAnalystTest < Minitest::Test
 
   def test_that_district_repository_exists
+    # skip
    dr = DistrictRepository.new
    ha = HeadcountAnalyst.new(dr)
 
@@ -11,6 +12,7 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_kindergarten_participation_rate_variation_against_state
+    # skip
     dr = DistrictRepository.new
     dr.load_data({
     :enrollment => {
@@ -34,6 +36,7 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_kindergarten_participation_rate_variation_against_another_district
+    # skip
     dr = DistrictRepository.new
     dr.load_data({
     :enrollment => {
@@ -56,6 +59,7 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_high_school_graduation_rate_variation_district_against_state
+    # skip
     dr = DistrictRepository.new
     dr.load_data({
     :enrollment => {
@@ -79,6 +83,7 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_kindergarten_participation_rate_variation_trend
+    # skip
     dr = DistrictRepository.new
     dr.load_data({
     :enrollment => {
@@ -104,6 +109,7 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_that_it_calculates_participation_rate_average
+    # skip
     dr = DistrictRepository.new
     dr.load_data({
     :enrollment => {
@@ -125,6 +131,7 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_kindergarten_participation_rate_variation_trend_method
+    # skip
     dr = DistrictRepository.new
     dr.load_data({
     :enrollment => {
@@ -146,6 +153,7 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_kindergarten_participation_against_high_school_graduation
+    # skip
     dr = DistrictRepository.new
     dr.load_data({
     :enrollment => {
@@ -168,6 +176,7 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_kindergarten_participation_correlates_with_high_school_graduation
+    # skip
     dr = DistrictRepository.new
     dr.load_data({
     :enrollment => {
@@ -190,6 +199,7 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_districts_correlate_across_state
+    # skip
     dr = DistrictRepository.new
     dr.load_data({
     :enrollment => {
@@ -211,6 +221,7 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_get_hash_method
+    # skip
     dr = DistrictRepository.new
     dr.load_data({
     :enrollment => {
@@ -234,6 +245,7 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_correlation_across_subset_of_districts
+    # skip
     dr = DistrictRepository.new
     dr.load_data({
     :enrollment => {
@@ -255,6 +267,7 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_kindergarten_participation_correlates_with_high_school_graduation_subset_of_districts
+    # skip
     dr = DistrictRepository.new
     dr.load_data({
     :enrollment => {
@@ -274,5 +287,76 @@ class HeadcountAnalystTest < Minitest::Test
 
     assert ha.kindergarten_participation_correlates_with_high_school_graduation(:across => ['AKRON R-1', 'ASPEN 1', 'BUENA VISTA R-31', 'ACADEMY 20'])
   end
+
+  def test_top_statewide_test_year_over_checks_grade_present_and_exists
+    dr = DistrictRepository.new
+    dr.load_data({
+    :enrollment => {
+      :kindergarten => "./data/Kindergartners in full-day program.csv",
+      :high_school_graduation => "./data/High school graduation rates.csv",
+    },
+    :statewide_testing => {
+      :third_grade => "./data/3rd grade students scoring proficient or above on the CSAP_TCAP.csv",
+      :eighth_grade => "./data/8th grade students scoring proficient or above on the CSAP_TCAP.csv",
+      :math => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math.csv",
+      :reading => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading.csv",
+      :writing => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"
+      }
+    })
+
+    ha = HeadcountAnalyst.new(dr)
+
+
+    assert_raises(UnknownDataError) do ha.top_statewide_test_year_over_year_growth(grade: 2, subject: :math)
+    end
+
+    assert_raises(InsufficientInformationError) do
+      ha.top_statewide_test_year_over_year_growth(subject: :math)
+    end
+
+    assert_raises(InsufficientInformationError) do
+      ha.top_statewide_test_year_over_year_growth(subject: :math, top: 3)
+    end
+  end
+
+  def test_top_statewide_test_year_over_checks_presence_and_validity_of_grade_and_presence_of_other_arguments
+    dr = DistrictRepository.new
+    dr.load_data({
+    :enrollment => {
+      :kindergarten => "./data/Kindergartners in full-day program.csv",
+      :high_school_graduation => "./data/High school graduation rates.csv",
+    },
+    :statewide_testing => {
+      :third_grade => "./data/3rd grade students scoring proficient or above on the CSAP_TCAP.csv",
+      :eighth_grade => "./data/8th grade students scoring proficient or above on the CSAP_TCAP.csv",
+      :math => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Math.csv",
+      :reading => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Reading.csv",
+      :writing => "./data/Average proficiency on the CSAP_TCAP by race_ethnicity_ Writing.csv"
+      }
+    })
+
+    ha = HeadcountAnalyst.new(dr)
+
+    assert_raises(UnknownDataError) do ha.top_statewide_test_year_over_year_growth(grade: 2, subject: :math)
+    end
+
+    assert_raises(InsufficientInformationError) do
+      ha.top_statewide_test_year_over_year_growth(subject: :math)
+    end
+
+    assert_raises(InsufficientInformationError) do
+      ha.top_statewide_test_year_over_year_growth(subject: :math, top: 3)
+    end
+
+    assert_equal "single leader", ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math)
+
+    assert_equal "multiple leader", ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math, top: 3)
+
+    assert_equal "growth", ha.top_statewide_test_year_over_year_growth(grade: 3)
+
+    assert_equal "growth with weighting", ha.top_statewide_test_year_over_year_growth(grade: 3, :weighting => {:math => 0.5, :reading => 0.5, :writing => 0.0})
+
+  end
+
 
 end
