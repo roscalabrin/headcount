@@ -93,7 +93,6 @@ module EconomicProfileParser
 # binding.pry
   end
 
-#########################
   def parse_data(array, key)
    new_array = array.group_by { |a| a.values.first }.map{|_, second_pair| second_pair.reduce(:merge)}
 
