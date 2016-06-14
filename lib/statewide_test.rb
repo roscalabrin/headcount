@@ -25,17 +25,11 @@ class StatewideTest
   end
 
   def proficient_by_race_or_ethnicity(race)
-    valid_race_or_ethnicity?(race)
-  end
-
-  def valid_race_or_ethnicity?(race)
-    races = statewide_test_data[:math][0].keys
-    races.shift
-      if races.include?(race.to_s.downcase)
-        query_proficient_by_race_or_ethnicity(race.to_s.downcase)
-      else
-        raise ArgumentError, "UnknownRaceError"
-      end
+    if valid_race_or_ethnicity?(race) == true
+      query_proficient_by_race_or_ethnicity(race.to_s.downcase)
+    else
+      raise ArgumentError, "UnknownRaceError"
+    end
   end
 
   def query_proficient_by_race_or_ethnicity(race)
@@ -57,34 +51,59 @@ class StatewideTest
       result.reduce({}, :merge)
   end
 
-  def valid_subject?(subject, grade, year)
-    statewide_test_data.keys
-      if races.include?(grade) && races.include?(subject.to_s.downcase)
-        # querry_proficient_by_race_or_ethnicity(race.to_s.downcase)
-      else
-        raise ArgumentError, "UnknownRaceError"
-      end
+  def valid_subject?(subject)
+    statewide_test_data.keys[3..5].include?(subject)
   end
 
-  def valid_year?(subject, grade, year)
+  def valid_grade?(grade)
+    statewide_test_data.keys[1..2].include?(grade)
+  end
+
+  def valid_race_or_ethnicity?(race)
+    races = statewide_test_data[:math][0].keys
+    races.shift
+    races.include?(race.to_s.downcase)
+  end
+
+  def valid_year?(year)
+    [2008, 2009, 2010, 2011, 2012, 2013, 2014].include?(year)
+  end
+
+  def error
+    raise ArgumentError, "UnknownDataError"
   end
 
   def proficient_for_subject_by_grade_in_year(subject, grade, year)
-    if statewide_test_data[grade] == nil ||
-      statewide_test_data[grade][year] == nil || statewide_test_data[grade][year][subject] == nil
-      raise ArgumentError, "UnknownDataError"
+    if valid_subject?(subject) == true && valid_grade?(grade) == true && valid_year?(year) == true
+      query_proficient_for_subject_by_grade_in_year(subject, grade, year)
     else
-      statewide_test_data[grade][year][subject]
+      error
     end
+  end
+
+  def query_proficient_for_subject_by_grade_in_year(subject, grade, year)
+    result = statewide_test_data[grade].map do |hash|
+      if hash[:year] == year
+        hash[subject.to_s]
+      end
+    end
+    result.select {|item| item != nil}.join.to_f
   end
 
   def proficient_for_subject_by_race_in_year(subject, race, year)
-    if statewide_test_data[race] == nil ||
-      statewide_test_data[race][year] == nil || statewide_test_data[race][year][subject] == nil
-      raise ArgumentError, "UnknownDataError"
+    if valid_subject?(subject) == true && valid_race_or_ethnicity?(race) == true && valid_year?(year) == true
+      query_proficient_for_subject_by_race_in_year(subject, race, year)
     else
-      statewide_test_data[race][year][subject]
+      error
     end
   end
 
+  def query_proficient_for_subject_by_race_in_year(subject, race, year)
+    result = statewide_test_data[subject].map do |hash|
+      if hash[:year] == year
+        hash[race.to_s]
+      end
+    end
+    result.select {|item| item != nil}.join.to_f
+  end
 end
