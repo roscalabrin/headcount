@@ -18,7 +18,6 @@ class EconomicProfileRepositoryTest < Minitest::Test
   end
 
   def test_it_finds_instance_of_economic_profile_by_name
-    skip
     epr = EconomicProfileRepository.new
     epr.load_data({
       :economic_profile => {

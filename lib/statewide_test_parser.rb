@@ -26,6 +26,7 @@ module StatewideTestParser
        key[:name]
      end
     end
+    # binding.pry
     clean_data(array_by_district, key)
   end
 

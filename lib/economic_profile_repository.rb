@@ -23,8 +23,30 @@ class EconomicProfileRepository
 
     title_i_array = csv_parser_title_i(file_tree[:economic_profile][:title_i], :title_i)
 
-      # merge_data(third_grade_array, eighth_grade_array, math_array, reading_array, writing_array)
-      binding.pry
+      merge_data(median_household_income_array, children_in_poverty_array, free_or_reduced_price_lunch_array, title_i_array)
+  end
+
+  def merge_data(median_household_income_array, children_in_poverty_array, free_or_reduced_price_lunch_array, title_i_array)
+#missing children in poverty array (maybe add nil for colorado?)
+    economic_profile_info = median_household_income_array.zip(free_or_reduced_price_lunch_array).map do |hash|
+         hash.reduce(&:merge)
+       end.zip(title_i_array).map do |hash|
+            hash.reduce(&:merge)
+         end
+
+    create_economic_profile_object(economic_profile_info)
+  end
+
+  def create_economic_profile_object(economic_profile_info)
+    economic_profile_info.map do |item|
+      economic_profile_object = EconomicProfile.new(item)
+      economic_profile_collection[item[:name]] = economic_profile_object
+    end
+# binding.pry
+  end
+
+  def find_by_name(district_name)
+    economic_profile_collection[district_name]
   end
 
 end

@@ -28,16 +28,17 @@ module EconomicProfileParser
    CSV.foreach(filepath, headers: true, header_converters: :symbol) do |row|
      if row[:poverty_level] == "Eligible for Free or Reduced Lunch"
        if row[:dataformat] == "Percent"
-          x = {:percentage => truncate(row[:data].to_f)}
+         label = :percentage
+          x = truncate(row[:data].to_f)
         else
-          x = {:number => truncate(row[:data].to_f)}
+          label = :number
+          x = truncate(row[:data].to_f)
         end
        lunch_array <<
-       ({:name => row[:location].upcase, :year => row[:timeframe].to_i, :poverty_level => x})
+       ({:name => row[:location].upcase, :year => row[:timeframe].to_i, label => x})
      end
     end
-    lunch_array
-    # binding.pry
+    group_data(lunch_array, key)
   end
 
    def csv_parser_title_i(filepath, key)
@@ -49,25 +50,42 @@ module EconomicProfileParser
    parse_data(title_i_array, key)
   end
 
-  def combine_imported_data_from_files
-  end
+  # def combine_imported_data_from_files
+  # end
 
-  def group_data(statewide_test_array, key)
-    grouped_data = statewide_test_array.group_by { |a| a.values.first }
+  def group_data(lunch_array, key)
+    grouped_data = lunch_array.group_by { |a| a.values.first }
     grouped_data_years = grouped_data.map do |_, second_pair|
       second_pair.group_by { |a| a[:year] }
     end
 
     grouped_array = grouped_data_years.map do |item|
-     item.map{|_, second_pair| second_pair.reduce(:merge)}.flatten
+     item.map{|key, value|
+       value.reduce(:merge)}.flatten
    end
+
     array_by_district = grouped_array.map do |hash|
      hash.group_by do |key, value|
        key[:name]
      end
     end
     clean_data(array_by_district, key)
+    # insert_nested_hash(array_by_district, key)
+    # # clean_data(array_by_district, key)
+    # binding.pry
   end
+
+  # def insert_nested_hash(array_by_district, key)
+  # result = array_by_district.map do |hash|
+  #     hash.values.map do |array|
+  #       array.map do |hash|
+  #         hash[:name] = (hash[:year] = {:percentage => hash[:percentage], :number => hash[:number]})
+  #         end
+  #
+  #       end
+  #     end
+  # binding.pry
+  # end
 
   def clean_data(array_by_district, key)
     array_by_district.flatten.map do |hash|
@@ -77,10 +95,11 @@ module EconomicProfileParser
       end
     end
     create_hash_with_data(array_by_district, key)
+    # binding.pry
   end
 
   def create_hash_with_data(array_by_district, key)
-    statewide_parsed_array = array_by_district.reduce({}) do |result, item|
+    final = array_by_district.reduce({}) do |result, item|
       array_by_district.map do |item|
         item.values.flatten
         {:name => item.keys.join, key => item.values.flatten}
