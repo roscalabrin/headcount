@@ -35,6 +35,7 @@ class EconomicProfileRepository
          end.zip(title_i_array).map do |hash|
               hash.reduce(&:merge)
             end
+
     create_economic_profile_object(economic_profile_info)
   end
 
