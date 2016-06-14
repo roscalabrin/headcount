@@ -2,6 +2,7 @@ require 'pry'
 require_relative 'district_repository'
 require_relative 'enrollment'
 require_relative 'format'
+require_relative 'custom_errors'
 
 class HeadcountAnalyst
   include Format
