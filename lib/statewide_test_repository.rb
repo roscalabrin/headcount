@@ -24,7 +24,6 @@ class StatewideTestRepository
   end
 
   def merge_data(third_grade_array, eighth_grade_array, math_array, reading_array, writing_array)
-    binding.pry
   statewide_info = third_grade_array.zip(eighth_grade_array).map do |hash|
        hash.reduce(&:merge)
     end.zip(math_array).map do |hash|
@@ -38,7 +37,6 @@ class StatewideTestRepository
   end
 
   def create_statewide_object(statewide_info)
-    binding.pry
     statewide_info.map do |item|
       statewide_object = StatewideTest.new(item)
       statewide_test_collection[item[:name]] = statewide_object

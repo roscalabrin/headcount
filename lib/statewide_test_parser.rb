@@ -26,7 +26,6 @@ module StatewideTestParser
        key[:name]
      end
     end
-    # binding.pry
     clean_data(array_by_district, key)
   end
 
@@ -47,7 +46,6 @@ module StatewideTestParser
         {:name => item.keys.join, key => item.values.flatten}
       end
     end
-# binding.pry
   end
 
 end

@@ -27,13 +27,14 @@ class EconomicProfileRepository
   end
 
   def merge_data(median_household_income_array, children_in_poverty_array, free_or_reduced_price_lunch_array, title_i_array)
-#missing children in poverty array (maybe add nil for colorado?)
-    economic_profile_info = median_household_income_array.zip(free_or_reduced_price_lunch_array).map do |hash|
+    children_in_poverty_array.unshift(:name=>'COLORADO', :children_in_poverty=>'N/A')
+    economic_profile_info = median_household_income_array.zip(children_in_poverty_array).map do |hash|
          hash.reduce(&:merge)
-       end.zip(title_i_array).map do |hash|
+       end.zip(free_or_reduced_price_lunch_array).map do |hash|
             hash.reduce(&:merge)
-         end
-
+         end.zip(title_i_array).map do |hash|
+              hash.reduce(&:merge)
+            end
     create_economic_profile_object(economic_profile_info)
   end
 

@@ -70,22 +70,7 @@ module EconomicProfileParser
      end
     end
     clean_data(array_by_district, key)
-    # insert_nested_hash(array_by_district, key)
-    # # clean_data(array_by_district, key)
-    # binding.pry
   end
-
-  # def insert_nested_hash(array_by_district, key)
-  # result = array_by_district.map do |hash|
-  #     hash.values.map do |array|
-  #       array.map do |hash|
-  #         hash[:name] = (hash[:year] = {:percentage => hash[:percentage], :number => hash[:number]})
-  #         end
-  #
-  #       end
-  #     end
-  # binding.pry
-  # end
 
   def clean_data(array_by_district, key)
     array_by_district.flatten.map do |hash|
