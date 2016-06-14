@@ -234,7 +234,6 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_correlation_across_subset_of_districts
-    skip
     dr = DistrictRepository.new
     dr.load_data({
     :enrollment => {
@@ -256,7 +255,6 @@ class HeadcountAnalystTest < Minitest::Test
   end
 
   def test_kindergarten_participation_correlates_with_high_school_graduation_subset_of_districts
-    skip
     dr = DistrictRepository.new
     dr.load_data({
     :enrollment => {
