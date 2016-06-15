@@ -135,20 +135,18 @@ end
       if data.has_key?(grade) == false
         raise UnknownDataError
       elsif
-        data.has_key?(grade) == true && subject.nil? == false && top.nil? == true && weighting.nil? == true
-        find_single_leader(grade, subject)
-      elsif
-        data.has_key?(grade) == true && subject.nil? == false && top.nil? == false && weighting.nil? == true
-        find_multiple_leader(grade, subject, top)
-      elsif
-        data.has_key?(grade) == true && subject.nil? == true && top.nil? == true && weighting.nil? == true
-        find_growth_across_all_subjects(grade)
-      elsif
-        data.has_key?(grade) == true && subject.nil? == true && top.nil? == true && weighting.nil? == false
-        find_growth_across_all_subjects_with_weighting(grade, weighting)
+        data.has_key?(grade) == true
+          if subject.nil? == false && top.nil? && weighting.nil?
+            find_single_leader(grade, subject)
+          elsif subject.nil? == false && top.nil? == false && weighting.nil?
+            find_multiple_leader(grade, subject, top)
+          elsif subject.nil? && top.nil? && weighting.nil?
+            find_growth_across_all_subjects(grade)
+          elsif subject.nil? && top.nil? && weighting.nil? == false
+            find_growth_across_all_subjects_with_weighting(grade, weighting)
+          end
       end
     end
-
   end
 
   def find_single_leader(grade, subject)
