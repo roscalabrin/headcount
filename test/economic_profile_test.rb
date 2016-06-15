@@ -3,6 +3,23 @@ require_relative 'test_helper'
 
 class EconomicProfileTest < Minitest::Test
 
+  # def test_economic_profile_basics
+  #   data = {:median_household_income => {[2014, 2015] => 50000, [2013, 2014] => 60000},
+  #           :children_in_poverty => {2012 => 0.1845},
+  #           :free_or_reduced_price_lunch => {2014 => {:percentage => 0.023, :total => 100}},
+  #           :title_i => {2015 => 0.543},
+  #          }
+  #
+  #   ep = EconomicProfile.new(data)
+  #   assert_equal 50000, ep.median_household_income_in_year(2015)
+  #   assert_equal 55000, ep.median_household_income_average
+  #   assert_in_delta 0.184, ep.children_in_poverty_in_year(2012), 0.005
+  #   assert_equal 0.023, ep.free_or_reduced_price_lunch_percentage_in_year(2014)
+  #   assert_in_delta 0.023, ep.free_or_reduced_price_lunch_percentage_in_year(2014), 0.005
+  #   assert_equal 100, ep.free_or_reduced_price_lunch_number_in_year(2014)
+  #   assert_in_delta 0.543, ep.title_i_in_year(2015), 0.005
+  # end
+
   def test_economic_profile_exists
     data = {:median_household_income => {[2005, 2009] => 50000, [2008, 2014] => 60000},
         :children_in_poverty => {2012 => 0.1845},
