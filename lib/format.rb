@@ -1,6 +1,5 @@
 module Format
 
-#returns N/A for iteration3
   def truncate(number)
     if is_number?(number)
       if number.to_s.length >= 5
@@ -15,6 +14,18 @@ module Format
 
   def is_number?(string)
     true if Float(string) rescue false
+  end
+
+  def sort_data(input)
+    input.sort_by {|item| item[:name]}
+  end
+
+  def sanitize_district_name(name)
+      if name[/[a-zA-Z0-9]+/]  == name
+          name
+          else
+          name.gsub!(/\W+/, '')
+      end
   end
 
   def format_district_input(district_input)

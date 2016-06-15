@@ -128,6 +128,7 @@ end
   ##################################################SONIAS WORK BEGINS NOW
 
   def top_statewide_test_year_over_year_growth(grade: nil, subject: nil, top: nil, weighting: nil)
+    binding.pry
     data = district_repository.district_collection["COLORADO"].statewide_test.statewide_test_data
     if grade.nil?
       raise InsufficientInformationError
