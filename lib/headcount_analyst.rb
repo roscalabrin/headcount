@@ -212,7 +212,7 @@ end
     multiple_leader = combined.sort_by do |element|
       element[1]*-1 #takes care of negatives
     end
-    multiple_leader[0..(top - 1)] 
+    multiple_leader[0..(top - 1)]
   end
 
   def find_growth_across_all_subjects(grade)
