@@ -61,7 +61,6 @@ class StatewideTest
   end
 
   def valid_race_or_ethnicity?(race)
-    binding.pry
     races = statewide_test_data[:math][0].keys
     races.shift
     races.include?(race.to_s.downcase)
