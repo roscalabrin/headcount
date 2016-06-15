@@ -128,23 +128,23 @@ end
   ##################################################SONIAS WORK BEGINS NOW
 
   def top_statewide_test_year_over_year_growth(grade: nil, subject: nil, top: nil, weighting: nil)
+    data = district_repository.district_collection["COLORADO"].statewide_test.statewide_test_data
     if grade.nil?
       raise InsufficientInformationError
     elsif grade.nil? == false
-      if
-      district_repository.district_collection["COLORADO"].statewide_test.statewide_test_data.has_key?(grade) == false
+      if data.has_key?(grade) == false
         raise UnknownDataError
       elsif
-        district_repository.district_collection["COLORADO"].statewide_test.statewide_test_data.has_key?(grade) == true && subject.nil? == false && top.nil? == true && weighting.nil? == true
+        data.has_key?(grade) == true && subject.nil? == false && top.nil? == true && weighting.nil? == true
         find_single_leader(grade, subject)
       elsif
-        district_repository.district_collection["COLORADO"].statewide_test.statewide_test_data.has_key?(grade) == true && subject.nil? == false && top.nil? == false && weighting.nil? == true
+        data.has_key?(grade) == true && subject.nil? == false && top.nil? == false && weighting.nil? == true
         find_multiple_leader(grade, subject, top)
       elsif
-        district_repository.district_collection["COLORADO"].statewide_test.statewide_test_data.has_key?(grade) == true && subject.nil? == true && top.nil? == true && weighting.nil? == true
+        data.has_key?(grade) == true && subject.nil? == true && top.nil? == true && weighting.nil? == true
         find_growth_across_all_subjects(grade)
       elsif
-        district_repository.district_collection["COLORADO"].statewide_test.statewide_test_data.has_key?(grade) == true && subject.nil? == true && top.nil? == true && weighting.nil? == false
+        data.has_key?(grade) == true && subject.nil? == true && top.nil? == true && weighting.nil? == false
         find_growth_across_all_subjects_with_weighting(grade, weighting)
       end
     end
