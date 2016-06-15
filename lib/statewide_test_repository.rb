@@ -21,17 +21,18 @@ class StatewideTestRepository
    reading_array = csv_parser(file_tree[:statewide_testing][:reading], :race_ethnicity, :reading)
    writing_array = csv_parser(file_tree[:statewide_testing][:writing], :race_ethnicity, :writing)
 
-  merge_data(sort_data(third_grade_array), sort_data(eighth_grade_array), sort_data(math_array), sort_data(reading_array), sort_data(writing_array))
+  merge_data(third_grade_array, eighth_grade_array, math_array, reading_array, writing_array)
+  # merge_data(sort_data(third_grade_array), sort_data(eighth_grade_array), sort_data(math_array), sort_data(reading_array), sort_data(writing_array))
   end
 
   def merge_data(third_grade_array, eighth_grade_array, math_array, reading_array, writing_array)
-  statewide_info = third_grade_array.zip(eighth_grade_array).map do |hash|
+  statewide_info = sort_data(third_grade_array).zip(sort_data(eighth_grade_array)).map do |hash|
        hash.reduce(&:merge)
-    end.zip(math_array).map do |hash|
+    end.zip(sort_data(math_array)).map do |hash|
          hash.reduce(&:merge)
-      end.zip(reading_array).map do |hash|
+      end.zip(sort_data(reading_array)).map do |hash|
            hash.reduce(&:merge)
-         end.zip(writing_array).map do |hash|
+         end.zip(sort_data(writing_array)).map do |hash|
               hash.reduce(&:merge)
             end
      create_statewide_object(statewide_info)

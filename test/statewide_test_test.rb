@@ -91,6 +91,14 @@ class StatewideTestTest < Minitest::Test
               }
     assert_equal result, statewide_test.proficient_by_race_or_ethnicity(:asian)
 
+    statewide_test = str.find_by_name("WOODLAND PARK RE-2")
+    result = {2011=>{:math=>0.451, :reading=>0.688, :writing=>0.503},
+                2012=>{:math=>0.467, :reading=>0.75, :writing=>0.528},
+                2013=>{:math=>0.473, :reading=>0.738, :writing=>0.531},
+                2014=>{:math=>0.418, :reading=>0.006, :writing=>0.453}}
+
+    assert_equal result, statewide_test.proficient_by_race_or_ethnicity(:hispanic)
+
     assert_raises(UnknownRaceError) do
       statewide_test.proficient_by_race_or_ethnicity(:aldebarans)
     end
