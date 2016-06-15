@@ -152,8 +152,55 @@ end
   end
 
   def find_single_leader(grade, subject)
-    "single leader"
+    statewide_test_objects = district_repository.district_collection.values.map do |element|
+      element.statewide_test
+    end
+    statewide_test_data_objects = statewide_test_objects.map do |element|
+      element.statewide_test_data
+    end
+    grade_by_district = []
+    statewide_test_data_objects.map do |element|
+      grade_by_district << element.fetch(grade)
+    end
+    sorted = grade_by_district.map do |array|
+      array.flat_map(&:entries).group_by(&:first).map{|k,v| Hash[k, v.map(&:last)]}
+    end
+    subject_values = sorted.map do |element|
+      element.find do |x|
+        x[subject.to_s]
+      end
+    end
+    subject_values_difference = subject_values.map do |hash|
+      (hash.values.flatten.last - hash.values.flatten.first)
+    end
+    year_over_year = subject_values_difference.map do |difference|
+      truncate(difference / ((subject_values[0][subject.to_s].length) - 1))
+    end
+    combined = district_repository.district_collection.keys.zip(year_over_year)
+    single_leader = combined.max_by do |element|
+      element[1]
+    end
+    single_leader
+    # district_by_subject = sorted.map do |element|
+    #   element.find do |x|
+    #     x[subject.to_s]
+    #   end
+    # end
+
+    # third_grade_by_district = {}
+    # statewide_test_data_objects.map do |element|
+    #   third_grade_by_district[element[:name]] = element[grade]
+    # end
+    # sorted = third_grade_by_district.values.flatten.sort_by do |element|
+    #   element[:year]
+    # end
+    # third_grade_by_district_by_subject = third_grade_by_district.values.map do |element|
+    #   element.map do |hash|
+    #     hash[subject.to_s]
+    #   end
+    # end
   end
+
 
   def find_multiple_leader(grade, subject, top)
     "multiple leader"

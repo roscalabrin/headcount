@@ -348,13 +348,14 @@ class HeadcountAnalystTest < Minitest::Test
       ha.top_statewide_test_year_over_year_growth(subject: :math, top: 3)
     end
 
-    assert_equal "single leader", ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math)
+    assert_equal ["SOUTH CONEJOS RE-10", 0.149], ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math)
 
-    assert_equal "multiple leader", ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math, top: 3)
-
-    assert_equal "growth", ha.top_statewide_test_year_over_year_growth(grade: 3)
-
-    assert_equal "growth with weighting", ha.top_statewide_test_year_over_year_growth(grade: 3, :weighting => {:math => 0.5, :reading => 0.5, :writing => 0.0})
+    assert_equal ["WRAY SCHOOL DISTRICT RD-2", 0.096], ha.top_statewide_test_year_over_year_growth(grade: 8, subject: :math)
+    # assert_equal "multiple leader", ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math, top: 3)
+    #
+    # assert_equal "growth", ha.top_statewide_test_year_over_year_growth(grade: 3)
+    #
+    # assert_equal "growth with weighting", ha.top_statewide_test_year_over_year_growth(grade: 3, :weighting => {:math => 0.5, :reading => 0.5, :writing => 0.0})
 
   end
 
