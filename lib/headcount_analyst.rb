@@ -149,8 +149,9 @@ end
     end
   end
 
-  def find_single_leader(grade, subject)
-    statewide_test_objects = district_repository.district_collection.values.map do |element|
+  def sort_grade_by_district(grade)
+    data = district_repository.district_collection.values
+    statewide_test_objects = data.map do |element|
       element.statewide_test
     end
     statewide_test_data_objects = statewide_test_objects.map do |element|
@@ -163,6 +164,10 @@ end
     sorted = grade_by_district.map do |array|
       array.flat_map(&:entries).group_by(&:first).map{|k,v| Hash[k, v.map(&:last)]}
     end
+  end
+
+  def find_single_leader(grade, subject)
+    sorted = sort_grade_by_district(grade)
     subject_values = sorted.map do |element|
       element.find do |x|
         x[subject.to_s]
@@ -182,19 +187,7 @@ end
   end
 
   def find_multiple_leader(grade, subject, top)
-    statewide_test_objects = district_repository.district_collection.values.map do |element|
-      element.statewide_test
-    end
-    statewide_test_data_objects = statewide_test_objects.map do |element|
-      element.statewide_test_data
-    end
-    grade_by_district = []
-    statewide_test_data_objects.map do |element|
-      grade_by_district << element.fetch(grade)
-    end
-    sorted = grade_by_district.map do |array|
-      array.flat_map(&:entries).group_by(&:first).map{|k,v| Hash[k, v.map(&:last)]}
-    end
+    sorted = sort_grade_by_district(grade)
     subject_values = sorted.map do |element|
       element.find do |x|
         x[subject.to_s]
@@ -214,19 +207,7 @@ end
   end
 
   def find_growth_across_all_subjects(grade)
-    statewide_test_objects = district_repository.district_collection.values.map do |element|
-      element.statewide_test
-    end
-    statewide_test_data_objects = statewide_test_objects.map do |element|
-      element.statewide_test_data
-    end
-    grade_by_district = []
-    statewide_test_data_objects.map do |element|
-      grade_by_district << element.fetch(grade)
-    end
-    sorted = grade_by_district.map do |array|
-      array.flat_map(&:entries).group_by(&:first).map{|k,v| Hash[k, v.map(&:last)]}
-    end
+    sorted = sort_grade_by_district(grade)
     math_values = sorted.map do |element|
       element.find do |x|
           x["math"]
