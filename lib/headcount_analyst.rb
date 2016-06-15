@@ -134,7 +134,7 @@ end
       raise InsufficientInformationError
     elsif grade.nil? == false
       if data.has_key?(grade) == false
-        raise UnknownDataError
+        raise UnknownDataError, "#{grade} is not a known grade"
       elsif
         data.has_key?(grade) == true
           if subject.nil? == false && top.nil? && weighting.nil?
@@ -207,8 +207,7 @@ end
     multiple_leader[0..(top - 1)]
   end
 
-  def find_growth_across_all_subjects(grade)
-    sorted = sort_grade_by_district(grade)
+  def math_values_difference(sorted)
     math_values = sorted.map do |element|
       element.find do |x|
           x["math"]
@@ -217,6 +216,9 @@ end
     math_values_difference = math_values.map do |hash|
       (hash.values.flatten.last - hash.values.flatten.first)
     end
+  end
+
+  def reading_values_difference(sorted)
     reading_values = sorted.map do |element|
       element.find do |x|
               x["reading"]
@@ -225,6 +227,9 @@ end
     reading_values_difference = reading_values.map do |hash|
       (hash.values.flatten.last - hash.values.flatten.first)
     end
+  end
+
+  def writing_values_difference(sorted)
     writing_values = sorted.map do |element|
       element.find do |x|
               x["writing"]
@@ -233,8 +238,15 @@ end
     writing_values_difference = writing_values.map do |hash|
       (hash.values.flatten.last - hash.values.flatten.first)
     end
-    writing_and_math = writing_values_difference.zip(math_values_difference).map{|x, y| x + y}
-    all = writing_and_math.zip(reading_values_difference).map{|x, y| x + y}
+  end
+
+  def find_growth_across_all_subjects(grade)
+    sorted = sort_grade_by_district(grade)
+    math = math_values_difference(sorted)
+    reading = reading_values_difference(sorted)
+    writing = writing_values_difference(sorted)
+    writing_and_math = writing.zip(math).map{|x, y| x + y}
+    all = writing_and_math.zip(reading).map{|x, y| x + y}
     averages = all.map do |number|
       number/3
     end
@@ -245,8 +257,9 @@ end
     across_all
   end
 
-  # def find_growth_across_all_subjects_with_weighting(grade, weighting)
-  #   "growth with weighting"
-  # end
+  def find_growth_across_all_subjects_with_weighting(grade, weighting)
+    sorted = sort_grade_by_district(grade)
+
+  end
 
 end
