@@ -348,15 +348,21 @@ class HeadcountAnalystTest < Minitest::Test
       ha.top_statewide_test_year_over_year_growth(subject: :math, top: 3)
     end
 
-    assert_equal ["SOUTH CONEJOS RE-10", 0.149], ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math)
+    assert_equal ["SOUTH CONEJOS RE-10", 0.149], ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math) #BAD DATA
 
-    assert_equal ["WRAY SCHOOL DISTRICT RD-2", 0.096], ha.top_statewide_test_year_over_year_growth(grade: 8, subject: :math)
-    #
-    # assert_equal ["SANGRE DE CRISTO RE-22J", 0.005], ha.top_statewide_test_year_over_year_growth(grade: 3) #NOT PASSING, BUT MOST ACCURATE, FROM SPEC
+    assert_equal ["WRAY SCHOOL DISTRICT RD-2", 0.096], ha.top_statewide_test_year_over_year_growth(grade: 8, subject: :math) #BAD DATA
 
-    assert_equal [["SOUTH CONEJOS RE-10", 0.149], ["WOODLAND PARK RE-2", 0.099], ["ASPEN 1", 0.088]], ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math, top: 3)
+    assert_equal ["SANGRE DE CRISTO RE-22J", 0.005], ha.top_statewide_test_year_over_year_growth(grade: 3) #GOOD DATA
 
-    # assert_equal "growth with weighting", ha.top_statewide_test_year_over_year_growth(grade: 3, :weighting => {:math => 0.5, :reading => 0.5, :writing => 0.0})
+    # assert_equal "OURAY R-1", ha.top_statewide_test_year_over_year_growth(grade: 8).first #GOOD DATA
+
+    # assert_in_delta 0.11, ha.top_statewide_test_year_over_year_growth(grade: 8).last, 0.005 #GOOD DATA
+
+    assert_equal [["SOUTH CONEJOS RE-10", 0.149], ["WOODLAND PARK RE-2", 0.099], ["ASPEN 1", 0.088]], ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :math, top: 3) #BAD DATA
+
+    top_performer = ha.top_statewide_test_year_over_year_growth(grade: 8, :weighting => {:math => 0.5, :reading => 0.5, :writing => 0.0})
+    assert_equal "OURAY R-1", top_performer.first
+    assert_in_delta 0.153, top_performer.last, 0.005 #GOOD DATA
 
   end
 
