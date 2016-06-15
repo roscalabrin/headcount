@@ -33,6 +33,7 @@ class EconomicProfile
  end
 
  def children_in_poverty_in_year(year)
+   binding.pry
   economic_profile_data[:children_in_poverty][year]
  end
 
