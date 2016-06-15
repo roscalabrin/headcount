@@ -14,20 +14,22 @@ class EnrollmentRepository
   end
 
   def load_data(file_tree)
-   filepath = file_tree[:enrollment][:kindergarten]
+
+  filepath = file_tree[:enrollment][:kindergarten]
      if file_tree[:enrollment][:high_school_graduation].nil?
        kindergarten_array = csv_parser(filepath, :kindergarten_participation)
-       create_enrollment_object(kindergarten_array)
+       create_enrollment_object(sort_data(kindergarten_array))
      else
        filepath_2 = file_tree[:enrollment][:high_school_graduation]
        kindergarten_array = csv_parser(filepath, :kindergarten_participation)
        high_school_array = csv_parser(filepath_2, :high_school_graduation_rates)
-       merge_data(sort_data(kindergarten_array), sort_data(high_school_array))
+       merge_data(kindergarten_array, high_school_array)
      end
+    #  binding.pry
   end
 
   def merge_data(kindergarten_array, high_school_array)
-    enrollment_info = kindergarten_array.zip(high_school_array).map do |kindergarten_array|
+    enrollment_info = sort_data(kindergarten_array).zip(sort_data(high_school_array)).map do |kindergarten_array|
       kindergarten_array.reduce(&:merge)
     end
     create_enrollment_object(enrollment_info)

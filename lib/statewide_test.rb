@@ -26,11 +26,13 @@ class StatewideTest
   end
 
   def proficient_by_race_or_ethnicity(race)
+
     if valid_race_or_ethnicity?(race) == true
       query_proficient_by_race_or_ethnicity(race.to_s.downcase)
     else
       raise UnknownRaceError
     end
+      # binding.pry
   end
 
   def query_proficient_by_race_or_ethnicity(race)
