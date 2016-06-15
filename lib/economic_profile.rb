@@ -10,8 +10,16 @@ class EconomicProfile
               :name
 
   def initialize(economic_profile_data)
-    @name = economic_profile_data[:name].upcase
+    @name
     @economic_profile_data = economic_profile_data
+  end
+
+  def name
+    if economic_profile_data[:name].nil?
+      @name = 'N/A'
+    else
+      @name = economic_profile_data[:name].upcase
+    end
   end
 
  def median_household_income_in_year(year)
@@ -33,7 +41,6 @@ class EconomicProfile
  end
 
  def children_in_poverty_in_year(year)
-  #  binding.pry
   economic_profile_data[:children_in_poverty][year]
  end
 
@@ -48,9 +55,22 @@ class EconomicProfile
  end
 
  def query_free_or_reduced_price_lunch_data(year, data_type)
-   economic_profile_data[:free_or_reduced_price_lunch].select do |hash|
-     hash[:year] == year
-   end[0][data_type]
+  #  binding.pry
+   if economic_profile_data[:free_or_reduced_price_lunch].class == Array
+     economic_profile_data[:free_or_reduced_price_lunch].select do |hash|
+       hash[:year] == year
+     end[0][data_type]
+   else
+    #  binding.pry
+    #  if data_type == :number
+    if data_type == :percentage
+       economic_profile_data[:free_or_reduced_price_lunch][year][:percentage]
+    else
+     key =
+     economic_profile_data[:free_or_reduced_price_lunch][year].keys[-1]
+     economic_profile_data[:free_or_reduced_price_lunch][year][key]
+   end
+   end
  end
 
  def title_i_in_year(year)
