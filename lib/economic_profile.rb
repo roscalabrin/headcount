@@ -53,10 +53,8 @@ class EconomicProfile
  end
 
  def title_i_in_year(year)
-  #  binding.pry
    valid_year?(year)
    economic_profile_data[:title_i][year]
-  
  end
 
 end

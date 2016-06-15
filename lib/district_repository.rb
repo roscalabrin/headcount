@@ -18,16 +18,16 @@ class DistrictRepository
 
   def load_data(file_tree)
     statewide_repo.load_data(file_tree)
-	  enrollment_repo.load_data(file_tree).each do |hash|
-	    names_array = enrollment_repo.enrollment_collection.keys
-	      names_array.each do |name|
-	        district = District.new({:name => name})
-	        district_collection[name.upcase] = district
-          district.enrollment = enrollment_repo.enrollment_collection.fetch(name)
-          district.statewide_test = statewide_repo.statewide_test_collection.fetch(name)
-	      end
+    enrollment_repo.load_data(file_tree).each do |hash|
+      names_array = enrollment_repo.enrollment_collection.keys
+      names_array.each do |name|
+        district = District.new({:name => name})
+        district_collection[name.upcase] = district
+        district.enrollment = enrollment_repo.enrollment_collection.fetch(name)
+        district.statewide_test = statewide_repo.statewide_test_collection.fetch(name)
       end
-	  end
+    end
+  end
 
   def find_by_name(district_name)
     if district_collection[district_name.upcase].nil?

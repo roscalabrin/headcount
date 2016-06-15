@@ -128,27 +128,25 @@ end
   ##################################################SONIAS WORK BEGINS NOW
 
   def top_statewide_test_year_over_year_growth(grade: nil, subject: nil, top: nil, weighting: nil)
+    data = district_repository.district_collection["COLORADO"].statewide_test.statewide_test_data
     if grade.nil?
       raise InsufficientInformationError
     elsif grade.nil? == false
-      if
-      district_repository.district_collection["COLORADO"].statewide_test.statewide_test_data.has_key?(grade) == false
+      if data.has_key?(grade) == false
         raise UnknownDataError
       elsif
-        district_repository.district_collection["COLORADO"].statewide_test.statewide_test_data.has_key?(grade) == true && subject.nil? == false && top.nil? == true && weighting.nil? == true
-        find_single_leader(grade, subject)
-      elsif
-        district_repository.district_collection["COLORADO"].statewide_test.statewide_test_data.has_key?(grade) == true && subject.nil? == false && top.nil? == false && weighting.nil? == true
-        find_multiple_leader(grade, subject, top)
-      elsif
-        district_repository.district_collection["COLORADO"].statewide_test.statewide_test_data.has_key?(grade) == true && subject.nil? == true && top.nil? == true && weighting.nil? == true
-        find_growth_across_all_subjects(grade)
-      elsif
-        district_repository.district_collection["COLORADO"].statewide_test.statewide_test_data.has_key?(grade) == true && subject.nil? == true && top.nil? == true && weighting.nil? == false
-        find_growth_across_all_subjects_with_weighting(grade, weighting)
+        data.has_key?(grade) == true
+          if subject.nil? == false && top.nil? && weighting.nil?
+            find_single_leader(grade, subject)
+          elsif subject.nil? == false && top.nil? == false && weighting.nil?
+            find_multiple_leader(grade, subject, top)
+          elsif subject.nil? && top.nil? && weighting.nil?
+            find_growth_across_all_subjects(grade)
+          elsif subject.nil? && top.nil? && weighting.nil? == false
+            find_growth_across_all_subjects_with_weighting(grade, weighting)
+          end
       end
     end
-
   end
 
   def find_single_leader(grade, subject)
@@ -181,37 +179,92 @@ end
       element[1]
     end
     single_leader
-    # district_by_subject = sorted.map do |element|
-    #   element.find do |x|
-    #     x[subject.to_s]
-    #   end
-    # end
-
-    # third_grade_by_district = {}
-    # statewide_test_data_objects.map do |element|
-    #   third_grade_by_district[element[:name]] = element[grade]
-    # end
-    # sorted = third_grade_by_district.values.flatten.sort_by do |element|
-    #   element[:year]
-    # end
-    # third_grade_by_district_by_subject = third_grade_by_district.values.map do |element|
-    #   element.map do |hash|
-    #     hash[subject.to_s]
-    #   end
-    # end
   end
 
-
   def find_multiple_leader(grade, subject, top)
-    "multiple leader"
+    statewide_test_objects = district_repository.district_collection.values.map do |element|
+      element.statewide_test
+    end
+    statewide_test_data_objects = statewide_test_objects.map do |element|
+      element.statewide_test_data
+    end
+    grade_by_district = []
+    statewide_test_data_objects.map do |element|
+      grade_by_district << element.fetch(grade)
+    end
+    sorted = grade_by_district.map do |array|
+      array.flat_map(&:entries).group_by(&:first).map{|k,v| Hash[k, v.map(&:last)]}
+    end
+    subject_values = sorted.map do |element|
+      element.find do |x|
+        x[subject.to_s]
+      end
+    end
+    subject_values_difference = subject_values.map do |hash|
+      (hash.values.flatten.last - hash.values.flatten.first)
+    end
+    year_over_year = subject_values_difference.map do |difference|
+      truncate(difference / ((subject_values[0][subject.to_s].length) - 1))
+    end
+    combined = district_repository.district_collection.keys.zip(year_over_year)
+    multiple_leader = combined.sort_by do |element|
+      element[1]*-1 #takes care of negatives
+    end
+    multiple_leader[0..(top - 1)]
   end
 
   def find_growth_across_all_subjects(grade)
-    "growth"
+    statewide_test_objects = district_repository.district_collection.values.map do |element|
+      element.statewide_test
+    end
+    statewide_test_data_objects = statewide_test_objects.map do |element|
+      element.statewide_test_data
+    end
+    grade_by_district = []
+    statewide_test_data_objects.map do |element|
+      grade_by_district << element.fetch(grade)
+    end
+    sorted = grade_by_district.map do |array|
+      array.flat_map(&:entries).group_by(&:first).map{|k,v| Hash[k, v.map(&:last)]}
+    end
+    math_values = sorted.map do |element|
+      element.find do |x|
+          x["math"]
+      end
+    end
+    math_values_difference = math_values.map do |hash|
+      (hash.values.flatten.last - hash.values.flatten.first)
+    end
+    reading_values = sorted.map do |element|
+      element.find do |x|
+              x["reading"]
+      end
+    end
+    reading_values_difference = reading_values.map do |hash|
+      (hash.values.flatten.last - hash.values.flatten.first)
+    end
+    writing_values = sorted.map do |element|
+      element.find do |x|
+              x["writing"]
+      end
+    end
+    writing_values_difference = writing_values.map do |hash|
+      (hash.values.flatten.last - hash.values.flatten.first)
+    end
+    writing_and_math = writing_values_difference.zip(math_values_difference).map{|x, y| x + y}
+    all = writing_and_math.zip(reading_values_difference).map{|x, y| x + y}
+    averages = all.map do |number|
+      number/3
+    end
+    combined = district_repository.district_collection.keys.zip(averages)
+    across_all= combined.max_by do |element|
+      element[1]
+    end
+    across_all
   end
 
-  def find_growth_across_all_subjects_with_weighting(grade, weighting)
-    "growth with weighting"
-  end
+  # def find_growth_across_all_subjects_with_weighting(grade, weighting)
+  #   "growth with weighting"
+  # end
 
 end
