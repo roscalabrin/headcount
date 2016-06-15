@@ -258,7 +258,29 @@ end
 
   def find_growth_across_all_subjects_with_weighting(grade, weighting)
     sorted = sort_grade_by_district(grade)
-
+    if weighting.values.reduce(:+) > 1
+      raise InsufficientInformationError
+    else
+      math = math_values_difference(sorted).map do |number|
+        number * weighting[:math]
+      end
+      reading = reading_values_difference(sorted).map do |number|
+        number * weighting[:reading]
+      end
+      writing = writing_values_difference(sorted).map do |number|
+        number * weighting[:writing]
+      end
+    end
+    writing_and_math = writing.zip(math).map{|x, y| x + y}
+    all = writing_and_math.zip(reading).map{|x, y| x + y}
+    averages = all.map do |number|
+      number/3
+    end
+    combined = district_repository.district_collection.keys.zip(averages)
+    across_all= combined.max_by do |element|
+      element[1]
+    end
+    across_all
   end
 
 end
