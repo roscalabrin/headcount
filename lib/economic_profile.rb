@@ -14,8 +14,8 @@ class EconomicProfile
     @economic_profile_data = economic_profile_data
   end
 
-#give error if year parameter is not an integer
  def median_household_income_in_year(year)
+   valid_year?(year)
    year_ranges = economic_profile_data[:median_household_income].keys.map do |key|
      (key[0]..key[1])
    end.select {|key_array| key_array.include?(year)}
@@ -37,19 +37,26 @@ class EconomicProfile
  end
 
  def free_or_reduced_price_lunch_percentage_in_year(year)
-   if year == nil
-     raise UnknownDataError
-   else
-     economic_profile_data[:free_or_reduced_price_lunch].select do |hash|
-       hash[:year] == year
-     end[0][:percentage]
-   end
+   valid_year?(year)
+   query_free_or_reduced_price_lunch_data(year, :percentage)
  end
 
- # def free_or_reduced_price_lunch_number_in_year(year)
- # end
- #
- # def title_i_in_year(year)
- # end
+ def free_or_reduced_price_lunch_number_in_year(year)
+   valid_year?(year)
+   query_free_or_reduced_price_lunch_data(year, :number).to_i
+ end
+
+ def query_free_or_reduced_price_lunch_data(year, data_type)
+   economic_profile_data[:free_or_reduced_price_lunch].select do |hash|
+     hash[:year] == year
+   end[0][data_type]
+ end
+
+ def title_i_in_year(year)
+  #  binding.pry
+   valid_year?(year)
+   economic_profile_data[:title_i][year]
+  
+ end
 
 end

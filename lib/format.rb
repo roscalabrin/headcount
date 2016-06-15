@@ -42,5 +42,11 @@ module Format
     end
   end
 
+  def valid_year?(year)
+    if year.class == Fixnum && year.inspect.size == 4
+    else
+      raise UnknownDataError
+    end
+  end
 
 end
