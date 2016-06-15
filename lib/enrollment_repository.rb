@@ -22,7 +22,7 @@ class EnrollmentRepository
        filepath_2 = file_tree[:enrollment][:high_school_graduation]
        kindergarten_array = csv_parser(filepath, :kindergarten_participation)
        high_school_array = csv_parser(filepath_2, :high_school_graduation_rates)
-       merge_data(kindergarten_array, high_school_array)
+       merge_data(sort_data(kindergarten_array), sort_data(high_school_array))
      end
   end
 

@@ -23,11 +23,11 @@ class EconomicProfileRepository
 
     title_i_array = csv_parser_title_i(file_tree[:economic_profile][:title_i], :title_i)
 
-      merge_data(median_household_income_array, children_in_poverty_array, free_or_reduced_price_lunch_array, title_i_array)
+    children_in_poverty_array.unshift(:name=>'COLORADO', :children_in_poverty=>'N/A')
+    merge_data(sort_data(median_household_income_array), sort_data(children_in_poverty_array), sort_data(free_or_reduced_price_lunch_array), sort_data(title_i_array))
   end
 
   def merge_data(median_household_income_array, children_in_poverty_array, free_or_reduced_price_lunch_array, title_i_array)
-    children_in_poverty_array.unshift(:name=>'COLORADO', :children_in_poverty=>'N/A')
     economic_profile_info = median_household_income_array.zip(children_in_poverty_array).map do |hash|
          hash.reduce(&:merge)
        end.zip(free_or_reduced_price_lunch_array).map do |hash|
