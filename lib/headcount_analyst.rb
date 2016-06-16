@@ -3,6 +3,7 @@ require_relative 'district_repository'
 require_relative 'enrollment'
 require_relative 'format'
 require_relative 'custom_errors'
+require_relative 'statewide_test_repository'
 
 class HeadcountAnalyst
   include Format
@@ -14,6 +15,7 @@ class HeadcountAnalyst
   end
 
   def kindergarten_participation_rate_variation(district_1, state_or_district_2)
+    # binding.pry
     district_1 = format_district_input(district_1)
     state_or_district_2 = format_district_input(state_or_district_2)
 

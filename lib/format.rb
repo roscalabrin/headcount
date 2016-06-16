@@ -1,3 +1,5 @@
+require_relative 'custom_errors'
+
 module Format
 
   def truncate(number)
@@ -13,7 +15,11 @@ module Format
   end
 
   def is_number?(string)
+    if string == 'LNE' || string == 'N/A' || string == '#VALUE!' || string == ' '
+      'N/A'
+    else
     true if Float(string) rescue false
+    end
   end
 
 
@@ -56,7 +62,8 @@ module Format
   end
 
   def valid_year?(year)
-    if year.class == Fixnum && year.inspect.size == 4
+    if year.is_a?(Fixnum) && year.inspect.size == 4
+      true
     else
       raise UnknownDataError
     end
