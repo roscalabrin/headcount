@@ -77,7 +77,6 @@ module EconomicProfileParser
       end
     end
     create_hash_with_data(array_by_district, key)
-    # binding.pry
   end
 
   def create_hash_with_data(array_by_district, key)

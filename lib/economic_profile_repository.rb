@@ -1,4 +1,3 @@
-require 'pry'
 require 'csv'
 require_relative 'economic_profile'
 require_relative 'format'
@@ -44,7 +43,6 @@ class EconomicProfileRepository
       economic_profile_object = EconomicProfile.new(item)
       ep_group[item[:name]] = economic_profile_object
     end
-# binding.pry
   end
 
   def find_by_name(district_name)

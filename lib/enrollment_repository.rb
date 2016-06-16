@@ -1,4 +1,3 @@
-require 'pry'
 require 'csv'
 require_relative 'enrollment'
 require_relative 'enrollment_parser'
@@ -25,7 +24,6 @@ class EnrollmentRepository
        high_school_array = csv_parser(filepath_2, :high_school_graduation_rates)
        merge_data(kindergarten_array, high_school_array)
      end
-    #  binding.pry
   end
 
   def merge_data(kindergarten_array, high_school_array)

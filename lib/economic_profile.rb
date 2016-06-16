@@ -1,4 +1,3 @@
-require 'pry'
 require_relative 'format'
 require_relative 'economic_profile_repository'
 require_relative 'custom_errors'
@@ -45,7 +44,6 @@ class EconomicProfile
  end
 
  def free_or_reduced_price_lunch_percentage_in_year(year)
-  #  binding.pry
    valid_year?(year)
    query_free_or_reduced_price_lunch_data(year, :percentage)
  end
@@ -56,14 +54,11 @@ class EconomicProfile
  end
 
  def query_free_or_reduced_price_lunch_data(year, data_type)
-  #  binding.pry
    if economic_profile_data[:free_or_reduced_price_lunch].class == Array
      economic_profile_data[:free_or_reduced_price_lunch].select do |hash|
        hash[:year] == year
      end[0][data_type]
    else
-    #  binding.pry
-    #  if data_type == :number
     if data_type == :percentage
        economic_profile_data[:free_or_reduced_price_lunch][year][:percentage]
     else
