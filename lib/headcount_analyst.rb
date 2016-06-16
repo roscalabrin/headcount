@@ -127,28 +127,66 @@ class HeadcountAnalyst
   end
 
   def top_statewide_test_year_over_year_growth(grade: nil, subject: nil, top: nil, weighting: nil)
-    # check_input(grade, subject, top, weighting)
     data = district_repository.statewide_repo.st_group.values.map do |item|
         item.statewide_test_data[grade]
         end
-
     result = data.map do |item|
         item.map do |item|
           {item[:year] => item[subject.to_s]}
         end
     end
+    cleaned = result.map do |item|
+      item.reject do |item|
+        item.values.join == 'N/A'
+      end
+    end
 
-    average = result.map do |array|
+    average = cleaned.map do |array|
+      next if array.empty?
+      if array.count == 1
+        0
+      else
       (array[-1].values.join.to_f - array[0].values.join.to_f)/
           (array[-1].keys.join.to_i - array[0].keys.join.to_i)
+
+      end
     end
-      value = average.max
-      index = average.find_index(value)
-      name = district_repository.d_group.keys[index]
-      [name, truncate(value)]
-      # binding.pry
+    single_leader(average, top)
     end
-  #
+
+    def single_leader(average, top)
+
+      if top.nil?
+        no_nil = eliminate_nil(average)
+        value = no_nil.max
+        index = average.find_index(value)
+        name = district_repository.d_group.keys[index]
+        [name, truncate(value)]
+      else
+        find_multiple_leaders(average, top)
+      end
+    end
+
+    def find_multiple_leaders(average, top)
+      name = district_repository.d_group.keys
+      no_nil = eliminate_nil(average)
+      values = no_nil.sort_by do |element|
+
+        element * -1
+      end
+      result = values[0..(top - 1)].map do |item|
+        [name[average.find_index(item)], truncate(item)]
+      end
+    end
+
+    def eliminate_nil(average)
+      average.reject do |item|
+          item.nil? || item.is_a?(Fixnum)
+      end
+  end
+
+
+
   #
   #   data = district_repository.d_group.values
   #   statewide_test_objects = data.map do |element|

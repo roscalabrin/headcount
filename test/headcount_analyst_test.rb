@@ -411,6 +411,14 @@ class HeadcountAnalystTest < Minitest::Test
     assert_equal ["COTOPAXI RE-3", 0.13], ha.top_statewide_test_year_over_year_growth(grade: 8, subject: :reading)
 
     assert_equal ["BETHUNE R-5", 0.148], ha.top_statewide_test_year_over_year_growth(grade: 3, subject: :writing)
+
+    assert_equal [["WILEY RE-13 JT", 0.3], ["WESTMINSTER 50", 0.12], ["SANGRE DE CRISTO RE-22J", 0.071]], ha.top_statewide_test_year_over_year_growth(grade: 3, top: 3, subject: :math)
+
+    assert_equal "SANGRE DE CRISTO RE-22J", ha.top_statewide_test_year_over_year_growth(grade: 3).first
+    assert_in_delta 0.071, ha.top_statewide_test_year_over_year_growth(grade: 3).last, 0.005
+
+    assert_equal "OURAY R-1", ha.top_statewide_test_year_over_year_growth(grade: 8).first
+    assert_in_delta 0.11, ha.top_statewide_test_year_over_year_growth(grade: 8).last, 0.005
   end
 
 
