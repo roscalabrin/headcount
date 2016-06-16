@@ -3,37 +3,24 @@ require_relative 'custom_errors'
 module Format
 
   def truncate(number)
-    check = is_number?(number)
-    if check == 'N/A'
+    input = is_number?(number)
+    if input == 'N/A'
       'N/A'
-    elsif check == true
-      if number.to_s.length >= 5
-        (number * 1000).floor / 1000.to_f
-      elsif number.to_s.length < 5
-        number.to_s.ljust(5, "0").to_f
-      end
     else
-      truncate(number.to_f)
+      if input.to_s.length >= 5
+        (input * 1000).floor / 1000.to_f
+      elsif input.to_s.length < 5
+        input.to_s.ljust(5, "0").to_f
+      end
     end
+
   end
 
-  # def truncate(number)
-  #   if is_number?(number)
-  #     if number.to_s.length >= 5
-  #       (number * 1000).floor / 1000.to_f
-  #     elsif number.to_s.length < 5
-  #       number.to_s.ljust(5, "0").to_f
-  #     end
-  #   else
-  #     truncate(number.to_f)
-  #   end
-  # end
-
-  def is_number?(string)
-    if string == 'LNE' || string == 'N/A' || string == '#VALUE!' || string == ' '
+  def is_number?(number)
+    if number == 'LNE' || number == 'N/A' || number == '#VALUE!' || number == ' '
       'N/A'
     else
-    true if Float(string) rescue false
+    number = number.to_f
     end
   end
 

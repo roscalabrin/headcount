@@ -7,7 +7,7 @@ module StatewideTestParser
    statewide_test_array = []
    CSV.foreach(filepath, headers: true, header_converters: :symbol) do |row|
      statewide_test_array <<
-     ({:name => row[:location].upcase, :year => row[:timeframe].to_i, row[argument].to_s.downcase => truncate(row[:data].to_f)})
+     ({:name => row[:location].upcase, :year => row[:timeframe].to_i, row[argument].to_s.downcase => truncate(row[:data])})
    end
    group_data(statewide_test_array, key)
   end
