@@ -162,6 +162,12 @@ end
     statewide_test_data_objects.map do |element|
       grade_by_district << element.fetch(grade)
     end
+    grade_by_district = grade_by_district.map do |element|
+      element.sort_by do |hash|
+        hash[:year]
+      end
+    end
+    #data
     sorted = grade_by_district.map do |array|
       array.flat_map(&:entries).group_by(&:first).map{|k,v| Hash[k, v.map(&:last)]}
     end

@@ -16,6 +16,8 @@ module Format
     true if Float(string) rescue false
   end
 
+
+
   def sort_data(input)
     input.sort_by {|item| item[:name]}
   end
