@@ -7,7 +7,7 @@ class EnrollmentRepositoryTest < Minitest::Test
     er = EnrollmentRepository.new
     er.load_data({:enrollment => {:kindergarten => "./data/Kindergartners in full-day program.csv", :high_school_graduation => "./data/High school graduation rates.csv"}})
 
-    assert_equal 181, er.enrollment_collection.length
+    assert_equal 181, er.e_group.length
   end
 
   def test_it_finds_instance_of_enrollment_by_name

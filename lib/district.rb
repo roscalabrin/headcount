@@ -4,11 +4,11 @@ class District
                 :statewide_test,
                 :economic_profile
 
-  def initialize(district_data, enrollment = nil, statewide_test = nil, economic_profile = nil)
+  def initialize(district_data, enroll= nil, statewide= nil, economic = nil)
     @name = district_data[:name].upcase
-    @enrollment = enrollment
-    @statewide_test = statewide_test
-    @economic_profile = economic_profile
+    @enrollment = enroll
+    @statewide_test = statewide
+    @economic_profile = economic
   end
 
 end

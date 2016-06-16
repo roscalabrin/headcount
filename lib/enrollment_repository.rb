@@ -7,10 +7,10 @@ class EnrollmentRepository
   include Format
   include EnrollmentParser
 
-  attr_reader :enrollment_collection
+  attr_reader :e_group
 
   def initialize
-    @enrollment_collection = {}
+    @e_group = {}
   end
 
   def load_data(file_tree)
@@ -38,12 +38,12 @@ class EnrollmentRepository
   def create_enrollment_object(enrollment_info)
     enrollment_info.map do |item|
       enrollment_object = Enrollment.new(item)
-      enrollment_collection[item[:name]] = enrollment_object
+      e_group[item[:name]] = enrollment_object
     end
   end
 
   def find_by_name(district_name)
-    enrollment_collection[district_name]
+    e_group[district_name]
   end
 
 end

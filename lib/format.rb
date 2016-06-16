@@ -13,7 +13,6 @@ module Format
         input.to_s.ljust(5, "0").to_f
       end
     end
-
   end
 
   def is_number?(number)
@@ -45,7 +44,7 @@ module Format
   end
 
   def validate_district_input(district_input)
-    district_repository.district_collection.include?(district_input)
+    district_repository.d_group.include?(district_input)
   end
 
   def check_argument_format(district_input)
