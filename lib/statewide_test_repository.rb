@@ -8,10 +8,10 @@ class StatewideTestRepository
   include Format
   include StatewideTestParser
 
-  attr_reader :statewide_test_collection
+  attr_reader :st_group
 
   def initialize
-    @statewide_test_collection = {}
+    @st_group = {}
   end
 
   def load_data(file_tree)
@@ -42,13 +42,12 @@ class StatewideTestRepository
   def create_statewide_object(statewide_info)
     statewide_info.map do |item|
       statewide_object = StatewideTest.new(item)
-      statewide_test_collection[item[:name]] = statewide_object
+      st_group[item[:name]] = statewide_object
     end
   end
 
   def find_by_name(district_name)
-    statewide_test_collection[district_name]
-    # binding.pry
+    st_group[district_name]
   end
 
 end

@@ -18,7 +18,7 @@ class DistrictRepositoryTest < Minitest::Test
                    }
                  })
 
-    assert_equal 181, dr.district_collection.length
+    assert_equal 181, dr.d_group.length
   end
 
   def test_that_it_finds_an_existing_district_by_name_and_its_case_insensitive

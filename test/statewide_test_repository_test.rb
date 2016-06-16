@@ -15,7 +15,7 @@ class StatewideTestRepositoryTest < Minitest::Test
         }
       })
 
-    assert_equal 181, str.statewide_test_collection.length
+    assert_equal 181, str.st_group.length
   end
 
   def test_it_finds_instance_of_statewide_test_by_name

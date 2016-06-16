@@ -8,10 +8,10 @@ class EconomicProfileRepository
   include Format
   include EconomicProfileParser
 
-  attr_reader :economic_profile_collection
+  attr_reader :ep_group
 
   def initialize
-    @economic_profile_collection = {}
+    @ep_group = {}
   end
 
   def load_data(file_tree)
@@ -42,13 +42,13 @@ class EconomicProfileRepository
   def create_economic_profile_object(economic_profile_info)
     economic_profile_info.map do |item|
       economic_profile_object = EconomicProfile.new(item)
-      economic_profile_collection[item[:name]] = economic_profile_object
+      ep_group[item[:name]] = economic_profile_object
     end
 # binding.pry
   end
 
   def find_by_name(district_name)
-    economic_profile_collection[district_name]
+    ep_group[district_name]
   end
 
 end

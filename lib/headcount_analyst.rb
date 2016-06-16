@@ -15,7 +15,6 @@ class HeadcountAnalyst
   end
 
   def kindergarten_participation_rate_variation(district_1, state_or_district_2)
-    # binding.pry
     district_1 = format_district_input(district_1)
     state_or_district_2 = format_district_input(state_or_district_2)
 
@@ -40,7 +39,7 @@ class HeadcountAnalyst
   end
 
   def average(dist_or_state, key)
-    participation_rates = district_repository.district_collection.fetch(dist_or_state).enrollment.enrollment_data[key].values
+    participation_rates = district_repository.d_group.fetch(dist_or_state).enrollment.enrollment_data[key].values
     participation_rates.reduce(:+) / participation_rates.length
   end
 
@@ -86,8 +85,8 @@ class HeadcountAnalyst
 end
 
   def correlation_of_all_districts
-   district_repository.district_collection.keys.delete("COLORADO")
-   correlation_array = district_repository.district_collection.keys.map do |district|
+   district_repository.d_group.keys.delete("COLORADO")
+   correlation_array = district_repository.d_group.keys.map do |district|
       kindergarten_participation_correlates_with_high_school_graduation(district)
     end
     correlation_number = correlation_array.select do |item|
@@ -124,14 +123,14 @@ end
   end
 
   def get_hash(dist_or_state)
-   hash = district_repository.district_collection.fetch(dist_or_state).enrollment.enrollment_data[:kindergarten_participation]
+   hash = district_repository.d_group.fetch(dist_or_state).enrollment.enrollment_data[:kindergarten_participation]
    Hash[hash]
   end
   ##################################################SONIAS WORK BEGINS NOW
 
   def top_statewide_test_year_over_year_growth(grade: nil, subject: nil, top: nil, weighting: nil)
     # binding.pry
-    data = district_repository.district_collection["COLORADO"].statewide_test.statewide_test_data
+    data = district_repository.d_group["COLORADO"].statewide_test.statewide_test_data
     if grade.nil?
       raise InsufficientInformationError
     elsif grade.nil? == false
@@ -153,7 +152,7 @@ end
   end
 
   def sort_grade_by_district(grade)
-    data = district_repository.district_collection.values
+    data = district_repository.d_group.values
     statewide_test_objects = data.map do |element|
       element.statewide_test
     end
@@ -188,7 +187,7 @@ end
     year_over_year = subject_values_difference.map do |difference|
       truncate(difference / ((subject_values[0][subject.to_s].length) - 1))
     end
-    combined = district_repository.district_collection.keys.zip(year_over_year)
+    combined = district_repository.d_group.keys.zip(year_over_year)
     single_leader = combined.max_by do |element|
       element[1]
     end
@@ -208,7 +207,7 @@ end
     year_over_year = subject_values_difference.map do |difference|
       truncate(difference / ((subject_values[0][subject.to_s].length) - 1))
     end
-    combined = district_repository.district_collection.keys.zip(year_over_year)
+    combined = district_repository.d_group.keys.zip(year_over_year)
     multiple_leader = combined.sort_by do |element|
       element[1]*-1 #takes care of negatives
     end
@@ -258,7 +257,7 @@ end
     averages = all.map do |number|
       number/3
     end
-    combined = district_repository.district_collection.keys.zip(averages)
+    combined = district_repository.d_group.keys.zip(averages)
     across_all= combined.max_by do |element|
       element[1]
     end
@@ -285,7 +284,7 @@ end
     averages = all.map do |number|
       number/3
     end
-    combined = district_repository.district_collection.keys.zip(averages)
+    combined = district_repository.d_group.keys.zip(averages)
     across_all= combined.max_by do |element|
       element[1]
     end

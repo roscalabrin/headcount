@@ -14,7 +14,7 @@ class EconomicProfileRepositoryTest < Minitest::Test
       }
     })
 
-    assert_equal 181, epr.economic_profile_collection.length
+    assert_equal 181, epr.ep_group.length
   end
 
   def test_it_finds_instance_of_economic_profile_by_name
