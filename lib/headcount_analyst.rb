@@ -1,4 +1,3 @@
-require 'pry'
 require_relative 'district_repository'
 require_relative 'enrollment'
 require_relative 'format'
@@ -138,62 +137,93 @@ class HeadcountAnalyst
     math = calculate_growth(grade, 'math', top, weighting)
     reading = calculate_growth(grade, 'reading', top, weighting)
     writing = calculate_growth(grade, 'writing', top, weighting)
-    # weighting(math, reading, writing, grade, weighting)
+    weighting(math, reading, writing, grade, weighting)
   end
 
- #  def weighting(math, reading, writing, grade, weighting)
- #    binding.pry
- #   if weighting.values.reduce(:+) > 1
- #     raise InsufficientInformationError
- #   else
- #     math_w = math.map do |number|
- #      if number.nil?
- #        number = 'none'
- #      else
- #        number * weighting[:math]
- #      end
- #    end
- #
- #    reading_w = reading.map do |number|
- #      if number.nil?
- #        number = 'none'
- #      else
- #        number * weighting[:reading]
- #      end
- #     end
- #
- #     writing_w = writing.map do |number|
- #       if number.nil?
- #         number ='none'
- #       else
- #         number * weighting[:writing]
- #       end
- #     end
- #
- #    m = eliminate_non_number(math_w)
- #    r = eliminate_non_number(reading_w)
- #    w = eliminate_non_number(writing_w)
- #
- #     math_and_reading = m.zip(r).map{|x, y| x + y}
- #     all = math_and_reading.zip(w).map{|x, y| x + y}
- #     averages = all.map do |number|
- #       number/3
- #     end
- #     binding.pry
- #     combined = district_repository.d_group.keys.zip(averages)
- #     across_all= combined.max_by do |element|
- #       element[1]
- #     end
- #     across_all
- #    end
- # end
- #
- #  def eliminate_non_number(array)
- #    q = array.reject do |item|
- #      item == 'none'
- #    end
- #    binding.pry
- #  end
+  def clean_numbers(average)
+    average.reject do |item|
+        item[1].nil? || item[1].is_a?(Fixnum)
+    end
+  end
+
+  def weighting(math, reading, writing, grade, weighting)
+  check_weighting(weighting)
+
+    names = district_repository.d_group.keys
+    math = names.zip(math)
+    reading = names.zip(reading)
+    writing = names.zip(writing)
+
+    m = clean_numbers(math).map do |number|
+      [number[0], number[1] * weighting[:math]]
+      end
+    r = clean_numbers(reading).map do |number|
+      [number[0], number[1] * weighting[:reading]]
+      end
+    w = clean_numbers(writing).map do |number|
+      [number[0], number[1] * weighting[:writing]]
+      end
+    combine_subjects(m, r, w)
+  end
+
+  def check_weighting(weighting)
+    if weighting.nil?
+      weighting = {:math=>0.33, :reading=>0.33, :writing=>0.33}
+    else
+      if weighting.values.reduce(:+) > 1
+        raise InsufficientInformationError
+      else
+        weighting
+      end
+    end
+  end
+
+  def combine_subjects(m, r, w)
+    add_all = m.reduce ({}) do |result, item|
+      if result[item[0]].nil?
+        result[item[0]] = item[1]
+      else
+        result[item] << item
+      end
+      result
+    end
+
+    w.map do |item|
+      if add_all[item[0]].nil?
+        add_all.store(item[0], item[1])
+      else
+         add_all[item[0]] = [add_all[item[0]], item[1]]
+       end
+     end
+
+    r.map do |item|
+       if add_all[item[0]].nil?
+         add_all.store(item[0], item[1])
+       else
+          add_all[item[0]] = [add_all[item[0]], item[1]]
+        end
+      end
+
+    averages = add_all.map do |item|
+      x = item.flatten
+      [x[0], x[1..-1].reduce(:+)/x.size - 1]
+    end
+    result_across_subjects(averages)
+end
+
+  def result_across_subjects(averages)
+    names = averages.map do |item|
+      item[0]
+    end
+    values = averages.map do |item|
+      item[1]
+    end
+    value = values.max
+    index = values.find_index(value)
+    names[index]
+    [names[index], truncate(value)]
+  end
+
 
   def find_growth_by_subject(grade, subject, top, weighting)
     average = calculate_growth(grade, subject, top, weighting)
@@ -204,11 +234,13 @@ class HeadcountAnalyst
     data = district_repository.statewide_repo.st_group.values.map do |item|
         item.statewide_test_data[grade]
         end
+
     result = data.map do |item|
         item.map do |item|
           {item[:year] => item[subject.to_s]}
         end
     end
+
     cleaned = result.map do |item|
       item.reject do |item|
         item.values.join == 'N/A'
@@ -228,6 +260,7 @@ class HeadcountAnalyst
   end
 
   def find_single_leader(average, top)
+
     if top.nil?
       no_nil = eliminate_nil(average)
       value = no_nil.max

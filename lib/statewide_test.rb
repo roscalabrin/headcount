@@ -1,7 +1,5 @@
-require 'pry'
 require_relative 'format'
 require_relative 'statewide_test_repository'
-# require_relative 'district_repository'
 require_relative 'custom_errors'
 
 class StatewideTest
@@ -13,7 +11,6 @@ class StatewideTest
   def initialize(statewide_test_data)
     @name = statewide_test_data[:name].upcase
     @statewide_test_data = statewide_test_data
-    # @statewide_repo = district
   end
 
   def proficient_by_grade(grade)
@@ -85,7 +82,6 @@ class StatewideTest
   end
 
   def query_proficient_for_subject_by_grade_in_year(subject, grade, year)
-    # binding.pry
     result = statewide_test_data[grade].map do |hash|
       if hash[:year] == year
         hash[subject.to_s]
