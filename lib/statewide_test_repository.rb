@@ -22,6 +22,7 @@ class StatewideTestRepository
    writing_array = csv_parser(file_tree[:statewide_testing][:writing], :race_ethnicity, :writing)
 
   merge_data(third_grade_array, eighth_grade_array, math_array, reading_array, writing_array)
+  # binding.pry
   # merge_data(sort_data(third_grade_array), sort_data(eighth_grade_array), sort_data(math_array), sort_data(reading_array), sort_data(writing_array))
   end
 

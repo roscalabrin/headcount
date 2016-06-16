@@ -45,13 +45,14 @@ class EconomicProfile
  end
 
  def free_or_reduced_price_lunch_percentage_in_year(year)
+  #  binding.pry
    valid_year?(year)
    query_free_or_reduced_price_lunch_data(year, :percentage)
  end
 
  def free_or_reduced_price_lunch_number_in_year(year)
    valid_year?(year)
-   query_free_or_reduced_price_lunch_data(year, :number).to_i
+   query_free_or_reduced_price_lunch_data(year, :number)
  end
 
  def query_free_or_reduced_price_lunch_data(year, data_type)
