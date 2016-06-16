@@ -3,7 +3,10 @@ require_relative 'custom_errors'
 module Format
 
   def truncate(number)
-    if is_number?(number)
+    check = is_number?(number)
+    if check == 'N/A'
+      'N/A'
+    elsif check == true
       if number.to_s.length >= 5
         (number * 1000).floor / 1000.to_f
       elsif number.to_s.length < 5
@@ -14,6 +17,18 @@ module Format
     end
   end
 
+  # def truncate(number)
+  #   if is_number?(number)
+  #     if number.to_s.length >= 5
+  #       (number * 1000).floor / 1000.to_f
+  #     elsif number.to_s.length < 5
+  #       number.to_s.ljust(5, "0").to_f
+  #     end
+  #   else
+  #     truncate(number.to_f)
+  #   end
+  # end
+
   def is_number?(string)
     if string == 'LNE' || string == 'N/A' || string == '#VALUE!' || string == ' '
       'N/A'
@@ -21,8 +36,6 @@ module Format
     true if Float(string) rescue false
     end
   end
-
-
 
   def sort_data(input)
     input.sort_by {|item| item[:name]}

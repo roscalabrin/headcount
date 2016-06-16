@@ -100,7 +100,7 @@ class EconomicProfileTest < Minitest::Test
   # end
 
   def test_free_or_reduced_price_lunch_percentage_in_year_with_invalid_year
-    skip
+    # skip
     epr = EconomicProfileRepository.new
     epr.load_data({
       :economic_profile => {
@@ -111,10 +111,10 @@ class EconomicProfileTest < Minitest::Test
       }
     })
 
-    economic_profile = epr.find_by_name('BRIGHTON 27')
+    # economic_profile = epr.find_by_name('BRIGHTON 27')
+    economic_profile = epr.find_by_name('AGATE 300')
 
-    assert_equal "test",
-      economic_profile.free_or_reduced_price_lunch_percentage_in_year(2014)
+    assert_equal "test", economic_profile.free_or_reduced_price_lunch_percentage_in_year("2014")
     # end
     # assert_raises(UnknownDataError) do
     #   economic_profile.free_or_reduced_price_lunch_percentage_in_year('2014')
