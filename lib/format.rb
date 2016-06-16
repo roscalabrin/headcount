@@ -68,4 +68,36 @@ module Format
     end
   end
 
+
+  # def check_input(grade, subject, top, weighting)
+  #   data = district_repository.d_group["COLORADO"].statewide_test.statewide_test_data
+  #   if grade.nil?
+  #     raise InsufficientInformationError
+  #   elsif grade.nil? == false
+  #     if data.has_key?(grade) == false
+  #       raise UnknownDataError, "#{grade} is not a known grade"
+  #     elsif
+  #       data.has_key?(grade) == true
+  #         if subject.nil? == false && top.nil? && weighting.nil?
+  #           find_single_leader(grade, subject)
+  #         elsif subject.nil? == false && top.nil? == false && weighting.nil?
+  #           find_multiple_leader(grade, subject, top)
+  #         elsif subject.nil? && top.nil? && weighting.nil?
+  #           find_growth_across_all_subjects(grade)
+  #         elsif subject.nil? && top.nil? && weighting.nil? == false
+  #           find_growth_across_all_subjects_with_weighting(grade, weighting)
+  #         end
+  #       end
+  #     end
+  #   end
+  #
+  #   def find_single_leader(grade, subject)
+  #     sorted = sort_grade_by_district(grade)
+  #     subject_values = sorted.map do |element|
+  #       element.find do |x|
+  #         x[subject.to_s]
+  #       end
+  #     end
+  #   end
+
 end
